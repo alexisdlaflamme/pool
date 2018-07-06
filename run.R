@@ -1,5 +1,5 @@
 library(shiny)
-install.packages("DT")
+install.packages("DT", repos = "http://cran.us.r-project.org")
 port <- Sys.getenv('PORT')
 
 shiny::runApp(
