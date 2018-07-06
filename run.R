@@ -1,5 +1,5 @@
 library(shiny)
-
+install.packages("DT")
 port <- Sys.getenv('PORT')
 
 shiny::runApp(
@@ -8,4 +8,4 @@ shiny::runApp(
   port = as.numeric(port)
 )
 
-install.packages("DT")
+
