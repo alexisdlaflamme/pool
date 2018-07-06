@@ -1,4 +1,6 @@
 library(shiny)
+library(DT)
+
 
 # Define UI ----anel
 ui <- fluidPage(
