@@ -41,5 +41,4 @@ miseEnFormeStatsPoolers<-function(poolerName){
   return (list(infoAttaquantsPooler, infoDefenseursPooler, infoGardiensPooler))
 }
 
-miseEnFormeStatsPoolers("Alexis")
 

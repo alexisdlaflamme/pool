@@ -7,17 +7,16 @@ DirPGM<-paste(getwd(), "/Programme/", sep = "")
 source(paste(DirPGM, "MiseEnFormeStatsPoolers.R", sep = ""))
 
 # Define UI ----anel
-ui <- fluidPage(
-  
-  navbarPage("Pool 2018-2019",
+ui <-navbarPage("Pool 2018-2019",
              tabPanel("Acceuil",
                       
-                      HTML( paste(h4("Yolo")))
+                      HTML( paste(h4("Les graphs de rich")))
                       
              ),
              tabPanel("Stats Poolers",
                       
-                      awesomeRadio("statsPoolers", inline = T ,label = "" , choices = list("Alexis" = "Alexis", "Xav" = "Xav", "Rich" = "Rich"), checkbox = T),
+                      radioGroupButtons("statsPoolers", label = "" , size = "lg", individual = T,
+                                        choices = list("Alexis" = "Alexis", "Xav" = "Xav", "Rich" = "Rich")),
                       HTML( paste(h4("Attaquant"))),
                       dataTableOutput("statsJoueursPooler"),
                       HTML( paste('<br/>', h4("Defenseurs"))),
@@ -26,18 +25,31 @@ ui <- fluidPage(
                       dataTableOutput("statsGardiensPooler")
                       
              ),
-             tabPanel("Échange",
-                      textInput(inputId = "nomPooler", label = "Nom Pooler")
+             tabPanel("Échange"
+                      
+             ),
+             tabPanel("Ajout Pooler",
+                      fluidRow(
+                          column(
+                                4,
+                                textInput(inputId = "nomPooler", label = "Nom du nouveau pooler", width = "100%"),
+                                textInput(inputId = "colorPooler", label = "Choisir la couleur du nouveau pooler", width = "100%"),
+                                actionBttn("createNewPooler", "Créer")
+                          )
+                      )
              ),
              tabPanel("Création d'équipe"
                       
                       
              )               
-  )
 )
 
 # Define server logic ----
 server <- function(input, output) {
+  
+  
+  
+  ##Affichage Stats Poolers##
   
   output$statsJoueursPooler <- DT::renderDataTable({
     statsPoolersChoisi <- miseEnFormeStatsPoolers(input$statsPoolers)
