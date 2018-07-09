@@ -1,20 +1,21 @@
-source(file="C:\\Users\\Alexis\\Dropbox\\Pool 2017-2018\\Pool 2018-2019\\Programme\\ImportJoueurGardienStats.R")
+
+source(paste(DirrPGM,"/ImportJoueurGardienStats.R", sep = ""))
 library(jsonlite)
 
-#Brief: Permet de mettre à jour les points des joueurs des poolers
+#Brief: Permet de mettre ? jour les points des joueurs des poolers
 #param(poolerName): Un string qui correspond au nom du pooler dont on veux actualiser le nom des joueurs
 miseAJourPtsPoolers<-function(poolerName){
   
-  #Import stats joueurs et gardien poolers dernière modif 
-  pathStatsPooler<- paste("C:\\Users\\Alexis\\Dropbox\\Pool 2017-2018\\Pool 2018-2019\\Data\\Poolers\\dataPooler", poolerName, ".json", sep = "")
+  #Import stats joueurs et gardien poolers derni?re modif 
+  pathStatsPooler<- paste(getwd(), "/Data/Poolers/dataPooler", poolerName, ".json", sep = "")
   statsJGPoolerJson<- fromJSON(pathStatsPooler)
   
-  #Mise à jours des stats des joueurs du pooler 
+  #Mise ? jours des stats des joueurs du pooler 
   statsJoueursNHL<- reqStatsJoueursNHL()
   statsJoueursPoolers<-statsJoueursNHL[which((statsJoueursNHL$Joueurs %in% statsJGPoolerJson[[1]]$Joueurs)),]
   statsJoueursPoolers<- as.data.frame(statsJoueursPoolers[!duplicated(statsJoueursPoolers$Joueurs),])
   
-  positionAinB<-match(statsJoueursPoolers$Joueurs, statsJGPoolerJson[[1]]$Joueurs)
+  positionAinB<-match(statsJGPoolerJson[[1]]$Joueurs,statsJoueursPoolers$Joueurs)
   
   j<-1
   for (i in positionAinB){
@@ -27,12 +28,12 @@ miseAJourPtsPoolers<-function(poolerName){
     }
   }
   
-  #Mise à jour des stats des gardiens
+  #Mise ? jour des stats des gardiens
   statsGardiensNHL<- reqStatsGardienNHL()
   statsGardiensPoolers <- statsGardiensNHL[which((statsGardiensNHL$Joueurs %in% statsJGPoolerJson[[2]]$Joueurs)),]
   statsGardiensPoolers<- as.data.frame(statsGardiensPoolers[!duplicated(statsGardiensPoolers$Joueurs),])
 
-    positionAinB<-match(statsGardiensPoolers$Joueurs, statsJGPoolerJson[[2]]$Joueurs)
+  positionAinB<-match(statsJGPoolerJson[[2]]$Joueurs, statsGardiensPoolers$Joueurs)
   
   j<-1
   for (i in positionAinB){
@@ -48,12 +49,10 @@ miseAJourPtsPoolers<-function(poolerName){
     }
   }
   
-  #Enregistrement des stats misent à jour
+  #Enregistrement des stats misent ? jour
   statsJGPoolerJson<- toJSON(statsJGPoolerJson, pretty = TRUE)
   write(statsJGPoolerJson, pathStatsPooler)
 }
 
-#miseAJourPtsPoolers("Xav")
-
-
+miseAJourPtsPoolers("Rich")
 

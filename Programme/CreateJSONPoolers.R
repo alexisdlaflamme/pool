@@ -1,9 +1,10 @@
-source(file="C:\\Users\\Alexis\\Dropbox\\Pool 2017-2018\\Pool 2018-2019\\Programme\\ImportJoueurGardienStats.R")
+DirPGM<-paste(getwd(), "/Programme/", sep = "")
+source(paste(DirPGM,"ImportJoueurGardienStats.R", sep = ""))
 
 library(dplyr)
 library(jsonlite)
 
-##Fonction temporaire pour le temps qu'on puisse se faire une équipe avec l'interface
+##Fonction temporaire pour le temps qu'on puisse se faire une ?quipe avec l'interface
 createAleatoireTeam<-function(){
   statsJoueurs<-reqStatsJoueursNHL()
   nomAtt<-sample_n(subset(statsJoueurs, (Position == "LW" | Position == "RW" | Position == "C") & GP >= 50 , c(Joueurs, Equipe)),13)
@@ -17,9 +18,9 @@ createAleatoireTeam<-function(){
   return(equipe[order(Statue, POS),])
 }
 
-##Permet de générer un fichier json qui contiendra les informations des joueur d'un poolers tout au long de la saison
+##Permet de g?n?rer un fichier json qui contiendra les informations des joueur d'un poolers tout au long de la saison
 createJsonPoolers <- function(poolerName, infoAlignement){
-  # init = À l'inilitiation
+  # init = ? l'inilitiation
   infoJoueur<- subset(infoAlignement, POS == "Att" | POS == "Def")
   infoGardien<- subset(infoAlignement, POS == "G")
   
@@ -29,16 +30,17 @@ createJsonPoolers <- function(poolerName, infoAlignement){
   
   infoGardienInit <- data.frame(cbind(infoGardien, matrix(rep(0,36),3,12), matrix(rep(as.character(Sys.Date( )),6),3,2)))
   colnames(infoGardienInit) <- c("Joueurs", "Equipe" ,"Statues","Position", "GP", "Win", "OL", "BL", "Buts", "Passes", 
-                                "GP_Inti", "Win_Inti", "OL_Inti", "BL_Inti", "Buts_Inti", "Passes_Inti" ,"DateDerniereModif", "DateEntreeAlignement")
+                                "GP_Init", "Win_Init", "OL_Init", "BL_Init", "Buts_Init", "Passes_Init" ,"DateDerniereModif", "DateEntreeAlignement")
   
   
   infoJson <- toJSON(list(infoJoueurInit, infoGardienInit), pretty = TRUE)
-  savePath <- paste("C:\\Users\\Alexis\\Dropbox\\Pool 2017-2018\\Pool 2018-2019\\Data\\Poolers\\dataPooler", poolerName, ".json", sep = "")
+  
+  savePath <- paste(getwd(), "/Data/Poolers/dataPooler", poolerName, ".json", sep = "")
   
   write(infoJson, savePath)
 }
 
 
 myTeam<- createAleatoireTeam()
-test<-createJsonPoolers("Xav", myTeam)
+test<-createJsonPoolers("Rich", myTeam)
 
