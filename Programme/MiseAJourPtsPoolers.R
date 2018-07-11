@@ -2,15 +2,15 @@
 source(paste(DirrPGM,"/ImportJoueurGardienStats.R", sep = ""))
 library(jsonlite)
 
-#Brief: Permet de mettre ? jour les points des joueurs des poolers
+#Brief: Permet de mettre à jour les points des joueurs des poolers
 #param(poolerName): Un string qui correspond au nom du pooler dont on veux actualiser le nom des joueurs
 miseAJourPtsPoolers<-function(poolerName){
   
-  #Import stats joueurs et gardien poolers derni?re modif 
+  #Import stats joueurs et gardien poolers dernière modif 
   pathStatsPooler<- paste(getwd(), "/Data/Poolers/dataPooler", poolerName, ".json", sep = "")
   statsJGPoolerJson<- fromJSON(pathStatsPooler)
   
-  #Mise ? jours des stats des joueurs du pooler 
+  #Mise à jours des stats des joueurs du pooler 
   statsJoueursNHL<- reqStatsJoueursNHL()
   statsJoueursPoolers<-statsJoueursNHL[which((statsJoueursNHL$Joueurs %in% statsJGPoolerJson[[1]]$Joueurs)),]
   statsJoueursPoolers<- as.data.frame(statsJoueursPoolers[!duplicated(statsJoueursPoolers$Joueurs),])
@@ -28,7 +28,7 @@ miseAJourPtsPoolers<-function(poolerName){
     }
   }
   
-  #Mise ? jour des stats des gardiens
+  #Mise à jour des stats des gardiens
   statsGardiensNHL<- reqStatsGardienNHL()
   statsGardiensPoolers <- statsGardiensNHL[which((statsGardiensNHL$Joueurs %in% statsJGPoolerJson[[2]]$Joueurs)),]
   statsGardiensPoolers<- as.data.frame(statsGardiensPoolers[!duplicated(statsGardiensPoolers$Joueurs),])
@@ -54,5 +54,5 @@ miseAJourPtsPoolers<-function(poolerName){
   write(statsJGPoolerJson, pathStatsPooler)
 }
 
-miseAJourPtsPoolers("Rich")
+miseAJourPtsPoolers("Xav")
 

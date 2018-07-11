@@ -30,12 +30,66 @@ ui <-navbarPage("Pool 2018-2019",
              ),
              tabPanel("Ajout Pooler",
                       fluidRow(
-                          column(
-                                4,
+                          column(2,
                                 textInput(inputId = "nomPooler", label = "Nom du nouveau pooler", width = "100%"),
-                                textInput(inputId = "colorPooler", label = "Choisir la couleur du nouveau pooler", width = "100%"),
+                                selectInput(inputId = "colorPooler", label = "Choisir la couleur du nouveau pooler", width = "100%",
+                                            choices = colors(), selected = 0),
                                 actionBttn("createNewPooler", "Créer")
+                          ),
+                          column(8, offset = 1,
+                                 fluidRow(
+                                      column(5, offset = 5, HTML( paste(h4("Attaquants")))),
+                                      column(4,
+                                        textInput(inputId = "att1", label = "Nom attaquant 1", width = "100%"),
+                                        textInput(inputId = "att4", label = "Nom attaquant 4", width = "100%"),
+                                        textInput(inputId = "att7", label = "Nom attaquant 7", width = "100%"),
+                                        textInput(inputId = "att10", label = "Nom attaquant 10", width = "100%")
+                                      ),
+                                      column(4,
+                                             textInput(inputId = "att2", label = "Nom attaquant 2", width = "100%"),
+                                             textInput(inputId = "att5", label = "Nom attaquant 5", width = "100%"),
+                                             textInput(inputId = "att8", label = "Nom attaquant 8", width = "100%"),
+                                             textInput(inputId = "att11", label = "Nom attaquant 11", width = "100%")
+                                      ),
+                                      column(4,
+                                             textInput(inputId = "att3", label = "Nom attaquant 3", width = "100%"),
+                                             textInput(inputId = "att6", label = "Nom attaquant 6", width = "100%"),
+                                             textInput(inputId = "att9", label = "Nom attaquant 9", width = "100%"),
+                                             textInput(inputId = "att12", label = "Nom attaquant 12", width = "100%")
+                                      )
+                                )
+                          ),
+                          column(8, offset = 3,
+                                 fluidRow(
+                                   column(5, offset = 5, HTML( paste(h4("Défenseurs")))),
+                                   column(6,
+                                            textInput(inputId = "def1", label = "Nom défenseur 1", width = "100%"),
+                                            textInput(inputId = "def3", label = "Nom défenseur 3", width = "100%"),
+                                            textInput(inputId = "def5", label = "Nom défenseur 5", width = "100%")
+                                    ),
+                                   column(6,
+                                           textInput(inputId = "def2", label = "Nom défenseur 2", width = "100%"),
+                                           textInput(inputId = "def4", label = "Nom défenseur 4", width = "100%"),
+                                           textInput(inputId = "def6", label = "Nom défenseur 6", width = "100%")
+                                   )
                           )
+                          
+                      ),
+                      column(8, offset = 3,
+                             fluidRow(
+                               column(5, offset = 5, HTML( paste(h4("Gardiens")))),
+                               column(4,
+                                      textInput(inputId = "goal1", label = "Nom gardien 1", width = "100%")
+                               ),
+                               column(4,
+                                      textInput(inputId = "goal2", label = "Nom gardien 2", width = "100%")
+                               ),
+                               column(4,
+                                      textInput(inputId = "goal3", label = "Nom gardien 3", width = "100%")
+                               )
+                             )
+                             
+                      )
                       )
              ),
              tabPanel("Création d'équipe"
@@ -66,6 +120,10 @@ server <- function(input, output) {
     datatable(statsPoolersChoisi[[3]],options = list("pageLength" = length(statsPoolersChoisi[[3]][,1]), dom = 't'))
   })
   
+  ##Création poolers
+  
+  
+
 }
 
 # Run the app ----

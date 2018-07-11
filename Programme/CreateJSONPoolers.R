@@ -2,6 +2,7 @@ DirPGM<-paste(getwd(), "/Programme/", sep = "")
 source(paste(DirPGM,"ImportJoueurGardienStats.R", sep = ""))
 
 library(dplyr)
+library(readxl)
 library(jsonlite)
 
 ##Fonction temporaire pour le temps qu'on puisse se faire une ?quipe avec l'interface
@@ -18,9 +19,12 @@ createAleatoireTeam<-function(){
   return(equipe[order(Statue, POS),])
 }
 
-##Permet de g?n?rer un fichier json qui contiendra les informations des joueur d'un poolers tout au long de la saison
-createJsonPoolers <- function(poolerName, infoAlignement){
-  # init = ? l'inilitiation
+##Permet de générer un fichier json qui contiendra les informations des joueur d'un poolers tout au long de la saison
+createJsonPoolers <- function(poolerName, poolerColor, infoAlignement){
+  
+  infoPooler<-data.frame(matrix(c(poolerName, poolerColor),1,2))
+  colnames(infoPooler)<-c("Nom", "Couleur")
+  
   infoJoueur<- subset(infoAlignement, POS == "Att" | POS == "Def")
   infoGardien<- subset(infoAlignement, POS == "G")
   
@@ -33,7 +37,7 @@ createJsonPoolers <- function(poolerName, infoAlignement){
                                 "GP_Init", "Win_Init", "OL_Init", "BL_Init", "Buts_Init", "Passes_Init" ,"DateDerniereModif", "DateEntreeAlignement")
   
   
-  infoJson <- toJSON(list(infoJoueurInit, infoGardienInit), pretty = TRUE)
+  infoJson <- toJSON(list(infoJoueurInit, infoGardienInit, infoPooler), pretty = TRUE)
   
   savePath <- paste(getwd(), "/Data/Poolers/dataPooler", poolerName, ".json", sep = "")
   
@@ -42,5 +46,5 @@ createJsonPoolers <- function(poolerName, infoAlignement){
 
 
 myTeam<- createAleatoireTeam()
-test<-createJsonPoolers("Rich", myTeam)
+createJsonPoolers("Xav", "red" , myTeam)
 
