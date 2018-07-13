@@ -75,6 +75,7 @@ ui <-navbarPage("Pool 2018-2019",
                           )
                           
                       ),
+                      
                       column(8, offset = 3,
                              fluidRow(
                                column(5, offset = 5, HTML( paste(h4("Gardiens")))),
