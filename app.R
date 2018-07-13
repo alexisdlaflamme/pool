@@ -25,11 +25,6 @@ ui <-navbarPage("Pool 2018-2019",
                           )
                       )
                       
-                 #     plotOutput("graph_total",width = "50%"),
-                  #    plotOutput("graph_attaquant",width = "50%"),
-                   #   plotOutput("graph_defensseur",width = '50%'),
-                    #  plotOutput("graph_gardien",width = '50%')                      
-                      
              ),
              tabPanel("Stats Poolers",
                       

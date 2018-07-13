@@ -44,7 +44,7 @@ miseEnFormeStatsPoolers<-function(poolerName){
 #Permet de générer une matrice avec différents classements
 
 classementPoolers<-function(){
-  vecteurPoolers<-sub(".json", "" ,sub("dataPooler", "" ,dir("C:/Users/Rich/Desktop/Pool/Data/Poolers")))
+  vecteurPoolers<-sub(".json", "" ,sub("dataPooler", "" ,dir(paste(getwd(), "/Data/Poolers", sep = ""))))
   classementAttaquant<-c()
   classementDefensseur<-c()
   classementGardien<-c()
