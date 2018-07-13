@@ -39,6 +39,27 @@ miseEnFormeStatsPoolers<-function(poolerName){
   infoGardiensPooler <- infoGardiensPooler[order(infoGardiensPooler$PTS, decreasing = T),]
   
   return (list(infoAttaquantsPooler, infoDefenseursPooler, infoGardiensPooler))
+
+}
+#Permet de générer une matrice avec différents classements
+
+classementPoolers<-function(){
+  vecteurPoolers<-sub(".json", "" ,sub("dataPooler", "" ,dir("C:/Users/Rich/Desktop/Pool/Data/Poolers")))
+  classementAttaquant<-c()
+  classementDefensseur<-c()
+  classementGardien<-c()
+  classementTotal<-c()
+  for (i in vecteurPoolers){
+    classementAttaquant<- union(classementAttaquant,sum(miseEnFormeStatsPoolers(i)[[1]]$PTS))
+    classementDefensseur<- union(classementDefensseur,sum(miseEnFormeStatsPoolers(i)[[2]]$PTS))
+    classementGardien<- union(classementGardien,sum(miseEnFormeStatsPoolers(i)[[3]]$PTS))
+    classementTotal<- union(classementTotal,sum(sum(miseEnFormeStatsPoolers(i)[[1]]$PTS),
+                                                sum(miseEnFormeStatsPoolers(i)[[2]]$PTS),
+                                                sum(miseEnFormeStatsPoolers(i)[[3]]$PTS)))
+  }
+  matriceClassement<- cbind(vecteurPoolers,classementAttaquant,classementDefensseur,
+                            classementGardien,classementTotal)
+  return(matriceClassement)
 }
 
 
