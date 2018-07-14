@@ -45,6 +45,6 @@ createJsonPoolers <- function(poolerName, poolerColor, infoAlignement){
 }
 
 
-myTeam<- createAleatoireTeam()
-createJsonPoolers("Xav", "red" , myTeam)
+#myTeam<- createAleatoireTeam()
+#createJsonPoolers("Xav", "red" , myTeam)
 
