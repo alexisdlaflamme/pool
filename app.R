@@ -9,8 +9,21 @@ source(paste(DirPGM, "MiseEnFormeStatsPoolers.R", sep = ""))
 # Define UI ----anel
 ui <-navbarPage("Pool 2018-2019",
              tabPanel("Acceuil",
-                      
-                      HTML( paste(h4("Les graphs de rich")))
+                      fluidRow(
+                          column(5,
+                                 plotOutput("graph_total",width = "100%")
+                               
+                          ),
+                          column(5,offset = 1,
+                                 plotOutput("graph_attaquant",width = "100%")                             
+                          ),
+                          column(5,
+                                 plotOutput("graph_defensseur",width = '100%')
+                          ),
+                          column(5,offset = 1,
+                                 plotOutput("graph_gardien",width = '100%')                   
+                          )
+                      )
                       
              ),
              tabPanel("Stats Poolers",
@@ -120,7 +133,50 @@ server <- function(input, output) {
     statsPoolersChoisi <- miseEnFormeStatsPoolers(input$statsPoolers)
     datatable(statsPoolersChoisi[[3]],options = list("pageLength" = length(statsPoolersChoisi[[3]][,1]), dom = 't'))
   })
+  ##Creation graphique
   
+  output$graph_total <- renderPlot({ # on fait appel ? la fonction 'renderPlot' cette fois car notre sortie sera un graphique
+    barplot(as.numeric(sort(classementPoolers()[,5])),xlab = 'Points',
+            main = 'Classement General',# le titre de notre histogramme (param?tre 'main') va ?tre constitu? du texte rentr? ? la main par l'utilisateur dans la partie 'UI' et stock? dans 'titre_histo'
+            col = c('orange','skyblue','red'), border = "black",horiz=TRUE,beside = TRUE,
+            names.arg=as.numeric(sort(classementPoolers()[,5])),las = 1,xlim =c(0,as.numeric(sort(classementPoolers()[,5])[3])+200))
+    box()
+    legend('topright',c('Alexis','Rich','Xav'),fill =c('Orange','Red','Skyblue') )
+    
+  })
+  
+  output$graph_attaquant <- renderPlot({ # on fait appel ? la fonction 'renderPlot' cette fois car notre sortie sera un graphique
+    barplot(as.numeric(sort(classementPoolers()[,2])),xlab = 'Points',
+            main = 'Classement Attaquants',# le titre de notre histogramme (param?tre 'main') va ?tre constitu? du texte rentr? ? la main par l'utilisateur dans la partie 'UI' et stock? dans 'titre_histo'
+            col = c('orange','red','skyblue'), border = "black",horiz=TRUE,beside = TRUE,
+            names.arg=as.numeric(sort(classementPoolers()[,2])),las = 1,xlim =c(0,as.numeric(sort(classementPoolers()[,2])[3])+200))
+    box()
+    legend('topright',c('Alexis','Rich','Xav'),fill =c('Orange','Red','Skyblue') )
+  })
+  
+  output$graph_defensseur <- renderPlot({ # on fait appel ? la fonction 'renderPlot' cette fois car notre sortie sera un graphique
+    barplot(as.numeric(sort(classementPoolers()[,3])),xlab = 'Points',
+            main = 'Classement Defensseurs',# le titre de notre histogramme (param?tre 'main') va ?tre constitu? du texte rentr? ? la main par l'utilisateur dans la partie 'UI' et stock? dans 'titre_histo'
+            col = c('skyblue','orange','red'), border = "black",horiz=TRUE,beside = TRUE,
+            names.arg=as.numeric(sort(classementPoolers()[,3])),las = 1,xlim =c(0,as.numeric(sort(classementPoolers()[,3])[3])+200))
+    box()
+    legend('topright',c('Alexis','Rich','Xav'),fill =c('Orange','Red','Skyblue') )
+    
+  })
+  
+  output$graph_gardien <- renderPlot({ # on fait appel ? la fonction 'renderPlot' cette fois car notre sortie sera un graphique
+    barplot(as.numeric(sort(classementPoolers()[,4])),xlab = 'Points',
+            main = 'Classement Gardiens',# le titre de notre histogramme (param?tre 'main') va ?tre constitu? du texte rentr? ? la main par l'utilisateur dans la partie 'UI' et stock? dans 'titre_histo'
+            col = c('orange','skyblue','red'), border = "black",horiz=TRUE,beside = TRUE,
+            names.arg=as.numeric(sort(classementPoolers()[,4])),las = 1,xlim =c(0,as.numeric(sort(classementPoolers()[,4])[3])+200))
+    box()
+    legend('topright',c('Alexis','Rich','Xav'),fill =c('Orange','Red','Skyblue') )
+    
+  })
+  
+  
+  
+
   ##Création poolers
   
   
