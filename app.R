@@ -5,6 +5,7 @@ library(DT)
 # Define UI ----anel
 DirPGM<-paste(getwd(), "/Programme/", sep = "")
 source(paste(DirPGM, "MiseEnFormeStatsPoolers.R", sep = ""))
+source(paste(DirPGM, "ConnectionDataBase.R", sep = ""))
 
 # Define UI ----anel
 ui <-navbarPage("Pool 2018-2019",
