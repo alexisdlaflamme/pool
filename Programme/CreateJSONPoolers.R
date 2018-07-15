@@ -28,7 +28,7 @@ createJsonPoolers <- function(poolerName, poolerColor, infoAlignement){
   infoJoueur<- subset(infoAlignement, POS == "Att" | POS == "Def")
   infoGardien<- subset(infoAlignement, POS == "G")
   
-  infoJoueurInit <- data.frame(cbind(infoJoueur, matrix(rep(0,120),20,6),matrix(rep(as.character(Sys.Date( )),40),20,2)))
+  infoJoueurInit <- data.frame(cbind(infoJoueur, matrix(rep(0,108),18,6),matrix(rep(as.character(Sys.Date( )),36),18,2)))
   colnames(infoJoueurInit) <- c("Joueurs", "Equipe" ,"Statues","Position", "GP" ,"Buts", "Passes", 
                                 "Parties_Init", "Buts_Init", "Passes_Init", "DateDerniereModif", "DateEntreeAlignement")
   
