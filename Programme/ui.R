@@ -28,12 +28,10 @@ ui <-navbarPage("Pool 2018-2019",
                          dataTableOutput("statsGardiensPooler")
                          
                 ),
-                navbarMenu("Gestion Alignement",
-                           tabPanel("Allo")
-                           ,
-                           interfaceGestionAlignement()
-                
+                tabPanel("Gestion Alignement"
+                        
                          
+                          
                 )
                 ,
                 tabPanel("Ajout Pooler",
@@ -42,7 +40,7 @@ ui <-navbarPage("Pool 2018-2019",
                                   textInput(inputId = "nomPooler", label = "Nom du nouveau pooler", width = "100%"),
                                   selectInput(inputId = "colorPooler", label = "Choisir la couleur du nouveau pooler", width = "100%",
                                               choices = colors(), selected = 0),
-                                  actionBttn("createNewPooler", "Créer")
+                                  actionBttn("createNewPooler", "CrÃ©er")
                            ),
                            column(8, offset = 1,
                                   fluidRow(
@@ -52,7 +50,7 @@ ui <-navbarPage("Pool 2018-2019",
                            ),
                            column(8, offset = 3,
                                   fluidRow(
-                                    column(5, offset = 5, HTML( paste(h4("Défenseurs")))),
+                                    column(5, offset = 5, HTML( paste(h4("D?fenseurs")))),
                                     alignementSelectionDefenseur()
                                   )
                                   
@@ -66,8 +64,5 @@ ui <-navbarPage("Pool 2018-2019",
                                   
                            )
                         )
-                ),
-                tabPanel("Création d'équipe"
-                         
-                         )               
+                )             
 )
