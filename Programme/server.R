@@ -68,7 +68,7 @@ server <- function(input, output) {
   })
   
   ####################
-  ##Création poolers##
+  ##Cr?ation poolers##
   ####################
   
   observeEvent(input$createNewPooler, {
@@ -97,15 +97,15 @@ server <- function(input, output) {
                                         ))
     colnames(infoJoueursGardiens)<-c("Joueurs", "Equipe", "Statue", "POS")
     
-    verifEntrées<- ifelse(grepl("^[A-Za-z]+$", gsub("-", "",gsub("[[:space:]]", "", infoJoueursGardiens$Joueurs)), perl = T), T, F)
+    verifEntrees<- ifelse(grepl("^[A-Za-z]+$", gsub("-", "",gsub("[[:space:]]", "", infoJoueursGardiens$Joueurs)), perl = T), T, F)
     
-    if (F %in% verifEntrées){
-      showNotification("Tout les joueurs doivent avoir un nom non-vide ou contenir des caractères valides...")
+    if (F %in% verifEntrees){
+      showNotification("Tout les joueurs doivent avoir un nom non-vide ou contenir des caract?res valides...")
     }
     else{
       createJsonPoolers(input$nomPooler, input$colorPooler,  infoJoueursGardiens)
       
-      showNotification(paste("Le pooler", input$nomPooler, "a bien été créée!"))
+      showNotification(paste("Le pooler", input$nomPooler, "a bien ?t? cr??e!"))
     }
   })
   
