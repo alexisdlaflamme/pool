@@ -1,5 +1,5 @@
 library(processx)
-library(RPostgreSQL)
+library(RPostgres)
 library(httr)
 library(dbplyr)
 library(tidyverse)

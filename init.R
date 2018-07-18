@@ -1,4 +1,4 @@
-my_packages = c("DT", "jsonlite", "dplyr", "readxl", "shinyWidgets", "processx", "RPostgreSQL", "httr", "dbplyr", "tidyverse")
+my_packages = c("DT", "jsonlite", "dplyr", "readxl", "shinyWidgets", "processx", "RPostgres", "httr", "dbplyr", "tidyverse")
 
 install_if_missing = function(p) {
   if (p %in% rownames(installed.packages()) == FALSE) {
