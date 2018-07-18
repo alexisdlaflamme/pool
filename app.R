@@ -2,8 +2,10 @@ library(shiny)
 library(shinyWidgets)
 library(DT)
 
-# Define UI ----anel
 DirPGM<-paste(getwd(), "/Programme/", sep = "")
+
+#Connection db
+source(paste(DirPGM,"BaseDonnee.R", sep = ""))
 
 #Programmes utilent pour l'interface ui
 source(paste(DirPGM, "InterfaceAlignementSelection.R", sep = ""))
