@@ -41,4 +41,6 @@ con <- postgress.connect()
 
 library(readxl)
 
-statsJoueursNHL<- paste(getwd(), "/Data/NHL/dataBaseStatsJoueur.xlsm", sep = "")
+ColTypesJoueurs = c("skip", rep("text",10) , rep("skip",17))
+ColNamesJoueurs = c("Joueurs", "Age", "Position", "Equipe", "GP", "Buts", "Passes", "PTS", "PlusMois", "PIM")
+statsJoueurs <- read_excel(statsJoueursNHL, sheet = "Joueurs", col_types = ColTypesJoueurs, col_names = ColNamesJoueurs, skip = 1)
