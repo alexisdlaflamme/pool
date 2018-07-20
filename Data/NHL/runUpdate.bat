@@ -1,0 +1,1 @@
+cscript.exe "D:/Projet Pool/pool 2017-2018/Data/NHL/launchMacro.vbs"

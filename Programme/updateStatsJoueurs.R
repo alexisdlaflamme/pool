@@ -1,21 +1,26 @@
-install.packages("RDCOMClient", repos = "http://www.omegahat.net/R")
+library("sqldf")
 
-library(RDCOMClient)
+source(paste0(getwd(), "/Programme/BaseDonnee.R"))
+source(paste0(getwd(), "/Programme/ImportJoueurGardienStats.R"))
 
-# Open a specific workbook in Excel:
-xlApp <- COMCreate("Excel.Application")
-xlWbk <- xlApp$Workbooks()$Open("C:\\Temp\\macro_template.xlsm")
+shell.exec(paste0(getwd(), "/Data/NHL/runUpdate.bat"))
 
-# this line of code might be necessary if you want to see your spreadsheet:
-xlApp[['Visible']] <- TRUE 
+updateJoueurGardienStats<-function(){
+  statsJoueurs<- reqStatsJoueursNHL()
+  statsGardien<- reqStatsGardienNHL()
+  
+  dbWriteTable(con, "Stats Joueurs", statsJoueurs, overwrite = T)
+  dbWriteTable(con, "Stats Gardiens", statsGardien, overwrite = T)
+}
 
-# Run the macro called "MyMacro":
-xlApp$Run("MyMacro")
+dbCreateTable(con, "Test", c(a = "char"))
 
-# Close the workbook and quit the app:
-xlWbk$Close(FALSE)
-xlApp$Quit()
+sqldf(" drop table if exists Info Poolers", connection = con)
 
-# Release resources:
-rm(xlWbk, xlApp)
-gc()
+dbAppendTable(con, "InfoPoolers", value = colnames(as.data.frame("allo"))<- "a")
+
+if (dbExistsTable(con, c("Info Poolers")) == T){
+  
+  
+}
+
