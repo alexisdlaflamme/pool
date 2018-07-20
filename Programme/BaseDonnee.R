@@ -6,19 +6,19 @@ postgress.connect <- function() {
   require(pool)
   
   #driver
-  drv <- dbDriver("PostgreSQL")
+  #drv <- dbDriver("PostgreSQL")
   
   #attempt connection
   if (Sys.getenv("DATABASE_URL") != "") {
     url <- httr::parse_url(Sys.getenv("DATABASE_URL"))
-    pool <- dbConnect(drv
+    pool <- dbConnect(RPostgres::Postgres()
                    , host     = url$hostname
                    , port     = url$port
                    , user     = url$user
                    , password = url$password
                    , dbname   = url$path
     )
-    print("Heroku application detected connecting to Postgres")
+    print("Heroku application detected connecting to Postgres online")
     
   } else {
     ##Ajuster##
@@ -31,14 +31,14 @@ postgress.connect <- function() {
                    , dbname   = "d2tn74iejrtdue"
                    
     )
-    print("Heroku application detected connecting to Postgres")
+    print("Heroku application detected connecting to Postgres local")
   }
   
   return(pool)
 }
 
+con <- postgress.connect()
 
+library(readxl)
 
-pg <- postgress.connect()
-
-
+statsJoueursNHL<- paste(getwd(), "/Data/NHL/dataBaseStatsJoueur.xlsm", sep = "")
