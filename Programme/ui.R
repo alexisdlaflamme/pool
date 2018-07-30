@@ -19,7 +19,7 @@ ui <-navbarPage("Pool 2018-2019",
                 tabPanel("Stats Poolers",
                          
                          radioGroupButtons("statsPoolers", label = "" , size = "lg", individual = T,
-                                           choices = list("Alexis" = "Alexis", "Xav" = "Xav", "Rich" = "Rich")),
+                                           choices = dbReadTable(con,"infoPoolers")$Nom),
                          HTML( paste(h4("Attaquant"))),
                          dataTableOutput("statsJoueursPooler"),
                          HTML( paste('<br/>', h4("Defenseurs"))),
