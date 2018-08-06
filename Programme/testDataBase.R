@@ -8,5 +8,7 @@ dbReadTable(con,"infoPoolers")
 #dbRemoveTable(con,"infoPoolers")
 #dbExistsTable(con,"statsGardiens")
 
-dbReadTable(con, "statsDefMaurice")
+dbReadTable(con, "statsDefRich")
 dbReadTable(con, "statsAttMaurice")
+
+dbWriteTable()

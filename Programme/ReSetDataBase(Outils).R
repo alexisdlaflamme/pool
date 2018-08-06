@@ -4,13 +4,13 @@ source(paste0(DirPGM,"updateStatsJoueur.R"))
 
 #Création de poolers fictif
 infoAlignement<- createAleatoireTeam()
-createPoolers("Xav", "Rouge" , infoAlignement)
+createPoolers("Xav", "red" , infoAlignement)
 
 infoAlignement<- createAleatoireTeam()
-createPoolers("Alex", "Bleu" , infoAlignement)
+createPoolers("Alex", "blue" , infoAlignement)
 
 infoAlignement<- createAleatoireTeam()
-createPoolers("Rich", "Orange" , infoAlignement)
+createPoolers("Rich", "orange" , infoAlignement)
 
 #Mise à jour de leur pts
 
