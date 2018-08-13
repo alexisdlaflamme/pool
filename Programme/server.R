@@ -2,7 +2,7 @@
 server <- function(input, output) {
   
   ######################
-  ##Creation graphique##
+  # Creation graphique #
   ######################
   
   output$graph_total <- renderPlot({
@@ -43,7 +43,7 @@ server <- function(input, output) {
   })
   
   ###########################
-  ##Affichage Stats Poolers##
+  # Affichage Stats Poolers #
   ###########################
   
   
@@ -64,7 +64,46 @@ server <- function(input, output) {
     })
   })
   
+  ############
+  # Échange  #
+  ############
 
+  
+  lapply(c("listJoueur1", "listJoueur2"), function(i){
+      output[[i]]<- renderUI({
+        
+          if (i == "listJoueur1"){
+            nom <- input$nomPoolers1
+          } else{
+            nom <- input$nomPoolers2
+          }
+        
+          listeJoueur<-rbind(matrix(dbReadTable(con, paste0("statsAtt", nom))$Joueur, 12,1), 
+                            matrix(dbReadTable(con, paste0("statsDef", nom))$Joueur,6,1), 
+                            matrix(dbReadTable(con, paste0("statsGardiens", nom))$Joueur,3,1)) 
+    
+    
+          selectInput(inputId = i, label = "Liste Joueur", width = "100%",
+                      multiple = T ,choices = listeJoueur, selected = 0, selectize=F)
+    
+    }) 
+  })
+  
+  lapply(c("listJoueurChoisi1", "listJoueurChoisi2"), function(i){
+    output[[i]]<- renderUI({
+      
+      if (i == "listJoueurChoisi1"){
+        nom <- input$listJoueur1
+      } else{
+        nom <- input$listJoueur2
+      }
+      
+      
+      selectInput(inputId = i, label = "Liste Joueur dans l'échange", width = "100%",
+                  multiple = T ,choices = nom, selected = 0, selectize=F)
+      
+    }) 
+  })
   
   ####################
   ##Création poolers##

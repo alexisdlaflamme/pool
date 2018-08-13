@@ -6,9 +6,10 @@ dbListTables(con)
 
 dbReadTable(con,"infoPoolers")
 #dbRemoveTable(con,"infoPoolers")
-#dbExistsTable(con,"statsGardiens")
+dbExistsTable(con,"statsGardienRich")
 
 dbReadTable(con, "statsDefRich")
-dbReadTable(con, "statsAttMaurice")
+dbReadTable(con, "statsAttRich")
+dbReadTable(con, "statsGardiensRich")
 
 dbWriteTable()
