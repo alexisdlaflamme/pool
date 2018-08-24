@@ -13,3 +13,4 @@ dbReadTable(con, "statsAttRich")
 dbReadTable(con, "statsGardiensRich")
 
 dbWriteTable()
+
