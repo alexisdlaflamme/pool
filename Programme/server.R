@@ -94,15 +94,29 @@ server <- function(input, output) {
       
       if (i == "listJoueurChoisi1"){
         nom <- input$listJoueur1
+        no<- 1
       } else{
         nom <- input$listJoueur2
+        no<- 2
       }
       
-      
-      selectInput(inputId = i, label = "Liste Joueur dans l'échange", width = "100%",
+      selectInput(inputId = paste0("listElementTarde", no), label = "Liste Joueur dans l'echange", width = "100%",
                   multiple = T ,choices = nom, selected = 0, selectize=F)
       
     }) 
+  })
+  
+  observeEvent(input$runEchange, {
+    if (input$nomPoolers1 == input$nomPoolers2){
+      showNotification("Vous devez choisir 2 poolers different pour faire un echange")
+      
+    }else{
+      if (length(input$listJoueur1) != length(input$listJoueur2)){
+        showNotification("Le nombre de joueur echanger doit etre le meme pour chaque poolers")
+      }else{
+        showNotification("Good")
+      }
+    }
   })
   
   ####################
