@@ -16,11 +16,15 @@ dbReadTable(con, "statsAttAlex")
 dbReadTable(con, "infoEchange")
 
 
-
-
-
 ##Initialisation table infoEchange
 infoEchanges<- data.frame(matrix(rep(NA,8),1,8))
 colnames(infoEchanges)<- c("Num", "Poolers1", "Joueurs acquis 1", "Echange", "Joueurs acquis 2", "Poolers2", "Date", "Statue") 
 infoEchanges
 #dbWriteTable(con, "infoEchange" ,infoEchanges, overwrite = T )
+
+
+##Ajout password temp
+test<- dbReadTable(con,"infoPoolers")
+a<-matrix(rep("allo",5),5, 1)
+colnames(a)<- c("password")
+dbWriteTable(con, "infoPoolers", cbind(test,a), overwrite = T)

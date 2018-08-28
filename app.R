@@ -15,6 +15,7 @@ source(paste0(DirPGM, "InterfaceAlignementSelection.R"))
 source(paste0(DirPGM, "MiseEnFormeStatsPoolers.R"))
 source(paste0(DirPGM, "CreatePooler.R"))
 source(paste0(DirPGM, "GetClassementPoolers.R"))
+source(paste0(DirPGM, "ServerGestionDechange.R"))
 
 #Programmes interface et serveur 
 source(paste0(DirPGM, "ui.R"))

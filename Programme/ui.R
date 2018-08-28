@@ -97,7 +97,9 @@ ui <-navbarPage("Pool 2018-2019",
                                   textInput(inputId = "nomPooler", label = "Nom du nouveau pooler", width = "100%"),
                                   selectInput(inputId = "colorPooler", label = "Choisir la couleur du nouveau pooler", width = "100%",
                                               choices = colors(), selected = 0),
-                                  actionBttn("createNewPooler", "Créer")
+                                  passwordInput(inputId = "motPasse", label = "Entrez votre mot de passe", width = "100%"),
+                                  passwordInput(inputId = "motPasseConfirm", label = "Confirmer votre mot de passe", width = "100%"),
+                                  actionBttn("createNewPooler", "Creer")
                            ),
                            column(8, offset = 1,
                                   fluidRow(

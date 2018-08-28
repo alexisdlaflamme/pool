@@ -1,9 +1,3 @@
-
-nomJoueur1<- "Alex"
-listJoueursEchange1<-c("Nick Leddy", "Max Pacioretty")
-nomJoueur2<-"Rich"
-listJoueursEchange2<-c("Drew Doughty", "Matthew Tkachuk")
-
 addNewPropositionEchange<- function(nomJoueur1, listJoueursEchange1, nomJoueur2, listJoueursEchange2){
   
   strListeJoueurs1<- listJoueursEchange1[1]

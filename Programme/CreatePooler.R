@@ -7,6 +7,7 @@ library(jsonlite)
 
 ##Fonction temporaire pour le temps qu'on puisse se faire une ?quipe avec l'interface
 createAleatoireTeam<-function(){
+  
   statsJoueurs<-dbReadTable(con, "statsJoueurs")
   nomAtt<-sample_n(subset(statsJoueurs, (Position == "LW" | Position == "RW" | Position == "C") & GP >= 50 , c(Joueurs, Equipe)),12)
   nomDef<-sample_n(subset(statsJoueurs, Position == "D" &  GP >= 50 , c(Joueurs, Equipe)),6)
@@ -20,23 +21,25 @@ createAleatoireTeam<-function(){
 }
 
 ##Permet de générer un fichier json qui contiendra les informations des joueur d'un poolers tout au long de la saison
-createPoolers <- function(poolerName, poolerColor, infoAlignement){
+createPoolers <- function(poolerName, poolerColor, infoAlignement, password){
 
   if (!dbExistsTable(con,"infoPoolers")){
     infoPooler<- as.data.frame(matrix(c(poolerName, poolerColor, paste0("statsAtt", poolerName), 
-                                        paste0("statsDef", poolerName), paste0("statsGardien", poolerName), paste0("evoPosition", poolerName)),
-                                        nrow = 1, ncol = 6))
+                                        paste0("statsDef", poolerName), paste0("statsGardien", poolerName), 
+                                        paste0("evoPosition", poolerName, password)),
+                                        nrow = 1, ncol = 7))
     
-    colnames(infoPooler)<- c("Nom", "Couleur", "tabStatsAtt", "tabStatsDef", "tabStatsGardien" ,"tabEvoPosition")
+    colnames(infoPooler)<- c("Nom", "Couleur", "tabStatsAtt", "tabStatsDef", "tabStatsGardien" ,"tabEvoPosition", "password")
     dbWriteTable(con, "infoPoolers", infoPooler)
     
   } else{
     
     infoPooler<- as.data.frame(matrix(c(poolerName, poolerColor, paste0("statsAtt", poolerName), 
-                                        paste0("statsDef", poolerName), paste0("statsGardien", poolerName), paste0("evoPosition", poolerName)),
-                                        nrow = 1, ncol = 6))
+                                        paste0("statsDef", poolerName), paste0("statsGardien", poolerName), 
+                                        paste0("evoPosition", poolerName), password),
+                                        nrow = 1, ncol = 7))
     
-    colnames(infoPooler)<- c("Nom", "Couleur", "tabStatsAtt", "tabStatsDef", "tabStatsGardien" ,"tabEvoPosition")
+    colnames(infoPooler)<- c("Nom", "Couleur", "tabStatsAtt", "tabStatsDef", "tabStatsGardien" ,"tabEvoPosition", "password")
     dbWriteTable(con, "infoPoolers", infoPooler, append = T)
   }
   

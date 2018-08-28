@@ -119,7 +119,7 @@ server <- function(input, output, session) {
         addNewPropositionEchange(input$nomPoolers1, input$listJoueur1, input$nomPoolers2, input$listJoueur2)
         output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
         output$choixEchange<-  renderUI({
-          selectInput(inputId = "noEchange", label = "Choisir le numero de l'echange ", width = "25%",
+          selectInput(inputId = "noEchange", label = "Choisir le numero de l'echange ", width = "100%",
                       multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 0)
         })
       }
@@ -131,7 +131,7 @@ server <- function(input, output, session) {
   output$choixEchange<-  renderUI({
             selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
                                           multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 0)
-    })
+  })
   
   ####################
   ##Création poolers##
@@ -139,7 +139,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$createNewPooler, {
     
-    infoJoueursGardiens<- as.data.frame(rbind(c(input$att1, "NA", "Actif", "Att"),
+    infoJoueursGardiens<- as.data.frame(rbind( c(input$att1, "NA", "Actif", "Att"),
                                                c(input$att2, "NA", "Actif", "Att"),
                                                c(input$att3, "NA", "Actif", "Att"),
                                                c(input$att4, "NA", "Actif", "Att"),
@@ -168,11 +168,14 @@ server <- function(input, output, session) {
     if (F %in% verifEntrees){
       showNotification("Tout les joueurs doivent avoir un nom non-vide ou contenir des caractères valides...")
     }
-    else{
-      createPoolers(input$nomPooler, input$colorPooler,  infoJoueursGardiens)
+    else if(input$motPasse == input$motPasseConfirm){
+      createPoolers(input$nomPooler, input$colorPooler,  infoJoueursGardiens, input$nomPooler)
       
       showNotification(paste("Le pooler", input$nomPooler, "a bien été créée!"))
+    }else{
+      showNotification("Les deux mots de passes ne correspondent pas ...")
     }
+      
   })
   
   
