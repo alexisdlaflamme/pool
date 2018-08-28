@@ -8,9 +8,19 @@ dbReadTable(con,"infoPoolers")
 #dbRemoveTable(con,"infoPoolers")
 dbExistsTable(con,"statsGardienRich")
 
-dbReadTable(con, "statsDefRich")
+dbReadTable(con, "statsDefAlex")
 dbReadTable(con, "statsAttRich")
-dbReadTable(con, "statsGardiensRich")
+dbReadTable(con, "statsDefRich")
+dbReadTable(con, "statsAttAlex")
 
-dbWriteTable()
+dbReadTable(con, "infoEchange")
 
+
+
+
+
+##Initialisation table infoEchange
+infoEchanges<- data.frame(matrix(rep(NA,8),1,8))
+colnames(infoEchanges)<- c("Num", "Poolers1", "Joueurs acquis 1", "Echange", "Joueurs acquis 2", "Poolers2", "Date", "Statue") 
+infoEchanges
+#dbWriteTable(con, "infoEchange" ,infoEchanges, overwrite = T )

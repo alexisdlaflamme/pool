@@ -16,7 +16,7 @@ source(paste0(DirPGM, "MiseEnFormeStatsPoolers.R"))
 source(paste0(DirPGM, "CreatePooler.R"))
 source(paste0(DirPGM, "GetClassementPoolers.R"))
 
-#Programmes interface et serveur
+#Programmes interface et serveur 
 source(paste0(DirPGM, "ui.R"))
 source(paste0(DirPGM, "server.R"))
 

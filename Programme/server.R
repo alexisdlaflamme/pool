@@ -1,5 +1,5 @@
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   ######################
   # Creation graphique #
@@ -102,22 +102,36 @@ server <- function(input, output) {
       
       selectInput(inputId = paste0("listElementTarde", no), label = "Liste Joueur dans l'echange", width = "100%",
                   multiple = T ,choices = nom, selected = 0, selectize=F)
-      
     }) 
   })
   
+
   observeEvent(input$runEchange, {
     if (input$nomPoolers1 == input$nomPoolers2){
-      showNotification("Vous devez choisir 2 poolers different pour faire un echange")
+      showNotification("Vous devez choisir 2 poolers different pour faire un echange et votre échange doit contenir des joueurs")
       
     }else{
-      if (length(input$listJoueur1) != length(input$listJoueur2)){
+      if ((length(input$listJoueur1) != length(input$listJoueur2)) | (length(input$listJoueur1) == 0L)){
         showNotification("Le nombre de joueur echanger doit etre le meme pour chaque poolers")
       }else{
-        showNotification("Good")
+        choix<- 1:length(dbReadTable(con, "infoEchange")$Num)
+        
+        addNewPropositionEchange(input$nomPoolers1, input$listJoueur1, input$nomPoolers2, input$listJoueur2)
+        output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
+        output$choixEchange<-  renderUI({
+          selectInput(inputId = "noEchange", label = "Choisir le numero de l'echange ", width = "25%",
+                      multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 0)
+        })
       }
     }
   })
+  
+  output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
+  
+  output$choixEchange<-  renderUI({
+            selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
+                                          multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 0)
+    })
   
   ####################
   ##Création poolers##

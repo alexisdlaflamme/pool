@@ -42,7 +42,7 @@ ui <-navbarPage("Pool 2018-2019",
                                 ),
                           column(2, 
                                  selectInput(inputId = "nomPoolers2", label = "Nom Poolers 2", width = "100%",
-                                             choices = dbReadTable(con,"infoPoolers")$Nom, selected = 0)
+                                             choices = dbReadTable(con,"infoPoolers")$Nom, selected = 1)
                                 )
                         ),
                         fluidRow(
@@ -54,9 +54,40 @@ ui <-navbarPage("Pool 2018-2019",
                           )
                         ),
                         fluidRow(
-                          column(2, align="center", 
-                                 actionBttn("runEchange", label = "Faire l'echange", color ="warning", style =  "bordered", size = "sm")
+                          column(12, align="center", 
+                                 actionBttn("runEchange", label = "Proposer un echange", color ="success", style =  "bordered", size = "sm")
                           )
+                        ),
+                        fluidRow(
+                          column(5,
+                                 HTML( paste('<br/>', h4("Sommaire des echanges"))),
+                                 HTML('<br/>')
+                          )
+                        ),
+                        fluidRow(
+                          column(12,align="center",
+                                 tableOutput("sommaireEchanges")
+                          )
+                        ),
+                        fluidRow(
+                          column(3,
+                                 uiOutput("choixEchange")
+                          ),
+                          column(3,
+                                 selectInput(inputId = "choixAction", label = "Choisir votre action", width = "100%",
+                                             choices = c("Accepter", "Refuser"), selected = 1)
+                          ),
+                          column(4,
+                                 passwordInput(inputId = "motPasse", label = "Entrez votre mot de passe", width = "100%")
+                          ),
+                          column(2, style = "margin-top: 25px;",
+                                 actionButton("tradeAction", "Submit", width = "100%")
+                          )
+                        ),
+                        fluidRow(
+                          HTML('<br/>'), HTML('<br/>'), HTML('<br/>'),
+                          HTML('<br/>'), HTML('<br/>'), HTML('<br/>'),
+                          HTML('<br/>'), HTML('<br/>'), HTML('<br/>')
                         )
                 )
                 ,
@@ -76,18 +107,16 @@ ui <-navbarPage("Pool 2018-2019",
                            ),
                            column(8, offset = 3,
                                   fluidRow(
-                                    column(5, offset = 5, HTML( paste(h4("D?fenseurs")))),
+                                    column(5, offset = 5, HTML( paste(h4("Defenseurs")))),
                                     alignementSelectionDefenseur()
                                   )
                                   
                            ),
-                           
                            column(8, offset = 3,
                                   fluidRow(
                                     column(5, offset = 5, HTML( paste(h4("Gardiens")))),
                                     alignementSelectionGardien()
                                   )
-                                  
                            )
                         )
                 )             
