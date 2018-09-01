@@ -25,6 +25,10 @@ addNewPropositionEchange<- function(nomJoueur1, listJoueursEchange1, nomJoueur2,
     newTrade$Num<- length(dbReadTable(con, "infoEchange")$Num)+1
     dbWriteTable(con, "infoEchange" , newTrade, overwrite = F, append = T )
   }
+  
+  tabTempsConfirm<- data.frame(c(0))
+  colnames(tabTempsConfirm)<- c("Confirmation")
+  dbWriteTable(con, paste0("ConfirmeEchange",length(dbReadTable(con, "infoEchange")$Num)), tabTempsConfirm, overwrite = T)
 }
 
 

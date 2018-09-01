@@ -4,7 +4,7 @@ test<-dbReadTable(con, "statsJoueurs")
 
 dbListTables(con)
 
-dbReadTable(con,"infoPoolers")
+
 #dbRemoveTable(con,"infoPoolers")
 dbExistsTable(con,"statsGardienRich")
 
@@ -15,16 +15,19 @@ dbReadTable(con, "statsAttAlex")
 
 dbReadTable(con, "infoEchange")
 
+dbReadTable(con,"ConfirmeEchange1")
 
 ##Initialisation table infoEchange
 infoEchanges<- data.frame(matrix(rep(NA,8),1,8))
-colnames(infoEchanges)<- c("Num", "Poolers1", "Joueurs acquis 1", "Echange", "Joueurs acquis 2", "Poolers2", "Date", "Statue") 
+colnames(infoEchanges)<- c("Num", "Poolers1", "Joueurs_offert_1", "Echange", "Joueurs_offert_2", "Poolers2", "Date", "Statue") 
 infoEchanges
 #dbWriteTable(con, "infoEchange" ,infoEchanges, overwrite = T )
 
+!dbExistsTable(con, "Allo")
 
 ##Ajout password temp
-test<- dbReadTable(con,"infoPoolers")
-a<-matrix(rep("allo",5),5, 1)
+
+test<- dbReadTable(con,"infoPoolers")[,-7]
+a<-matrix(c("allo1", "allo2", "allo3", 'allo4', "allo5"),5, 1)
 colnames(a)<- c("password")
 dbWriteTable(con, "infoPoolers", cbind(test,a), overwrite = T)

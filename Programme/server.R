@@ -82,10 +82,8 @@ server <- function(input, output, session) {
                             matrix(dbReadTable(con, paste0("statsDef", nom))$Joueur,6,1), 
                             matrix(dbReadTable(con, paste0("statsGardiens", nom))$Joueur,3,1)) 
     
-    
-          selectInput(inputId = i, label = "Liste Joueur", width = "100%",
+          selectInput(inputId = i, label = "Liste Joueur", width = "100%", size = 10,
                       multiple = T ,choices = listeJoueur, selected = 0, selectize=F)
-    
     }) 
   })
   
@@ -99,7 +97,7 @@ server <- function(input, output, session) {
         nom <- input$listJoueur2
         no<- 2
       }
-      
+  
       selectInput(inputId = paste0("listElementTarde", no), label = "Liste Joueur dans l'echange", width = "100%",
                   multiple = T ,choices = nom, selected = 0, selectize=F)
     }) 
@@ -114,12 +112,12 @@ server <- function(input, output, session) {
       if ((length(input$listJoueur1) != length(input$listJoueur2)) | (length(input$listJoueur1) == 0L)){
         showNotification("Le nombre de joueur echanger doit etre le meme pour chaque poolers")
       }else{
-        choix<- 1:length(dbReadTable(con, "infoEchange")$Num)
-        
+
         addNewPropositionEchange(input$nomPoolers1, input$listJoueur1, input$nomPoolers2, input$listJoueur2)
+        
         output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
         output$choixEchange<-  renderUI({
-          selectInput(inputId = "noEchange", label = "Choisir le numero de l'echange ", width = "100%",
+          selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
                       multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 0)
         })
       }
@@ -131,6 +129,25 @@ server <- function(input, output, session) {
   output$choixEchange<-  renderUI({
             selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
                                           multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 0)
+  })
+  
+  observeEvent(input$tradeAction, {
+    if (!dbExistsTable(con, paste0("ConfirmeEchange", input$noEchange))){
+      showNotification("Une decision a deja ete prise vis-a-vis cet echange")
+    }else{
+      
+      if (input$choixAction == "Accepter"){
+        
+        echangeAccepter(input$nomTrade,input$choixEchange, input$motPasse)
+        
+      }else if (input$choixAction == "Refuser"){
+        
+        echangeRefuser(input$nomTrade, input$choixEchange, input$motPasse)
+      
+      }
+    }
+    
+    
   })
   
   ####################
@@ -169,7 +186,7 @@ server <- function(input, output, session) {
       showNotification("Tout les joueurs doivent avoir un nom non-vide ou contenir des caractères valides...")
     }
     else if(input$motPasse == input$motPasseConfirm){
-      createPoolers(input$nomPooler, input$colorPooler,  infoJoueursGardiens, input$nomPooler)
+      createPoolers(input$nomPooler, input$colorPooler,  infoJoueursGardiens, input$motPasseCreate)
       
       showNotification(paste("Le pooler", input$nomPooler, "a bien été créée!"))
     }else{
