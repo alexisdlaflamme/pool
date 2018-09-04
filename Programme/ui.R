@@ -42,7 +42,7 @@ ui <-navbarPage("Pool 2018-2019",
                         fluidRow(
                           column(2, 
                                  selectInput(inputId = "nomPoolers1", label = "Nom Poolers 1", width = "100%",
-                                    choices = dbReadTable(con,"infoPoolers")$Nom, selected = 1)
+                                    choices = dbReadTable(con,"infoPoolers")$Nom, selected = dbReadTable(con,"infoPoolers")$Nom[1])
                                 ),
                           column(4,
                                  uiOutput("listJoueur1")
@@ -52,7 +52,7 @@ ui <-navbarPage("Pool 2018-2019",
                                 ),
                           column(2, 
                                  selectInput(inputId = "nomPoolers2", label = "Nom Poolers 2", width = "100%",
-                                             choices = dbReadTable(con,"infoPoolers")$Nom, selected = 2)
+                                             choices = dbReadTable(con,"infoPoolers")$Nom, selected = dbReadTable(con,"infoPoolers")$Nom[2])
                                 )
                         ),
                         fluidRow( width = "200px",
@@ -142,6 +142,6 @@ ui <-navbarPage("Pool 2018-2019",
                                     alignementSelectionGardien()
                                   )
                            )
-                        )
+                         )
                 )             
 )

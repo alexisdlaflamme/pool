@@ -1,3 +1,5 @@
+poolerName<- "Rich"
+
 
 ##Brief: Permet de faire 3 tableaux qui seront utile pour l'interface (un tableau attaquants, un tableau defenseurs, tableau gardien)
 ##param(poolerName):  un string reprensentant le nom d'un pooler

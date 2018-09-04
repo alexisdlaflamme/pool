@@ -23,14 +23,14 @@ createAleatoireTeam<-function(){
 ##Permet de générer un fichier json qui contiendra les informations des joueur d'un poolers tout au long de la saison
 createPoolers <- function(poolerName, poolerColor, infoAlignement, password){
 
-  if (!dbExistsTable(con,"infoPoolers")){
+  if (!dbExistsTable(con,"infoPoolers") | is.na(dbReadTable(con,"infoPoolers")[1,1])){
     infoPooler<- as.data.frame(matrix(c(poolerName, poolerColor, paste0("statsAtt", poolerName), 
                                         paste0("statsDef", poolerName), paste0("statsGardien", poolerName), 
-                                        paste0("evoPosition", poolerName, password)),
+                                        paste0("evoPosition", poolerName), password),
                                         nrow = 1, ncol = 7))
     
     colnames(infoPooler)<- c("Nom", "Couleur", "tabStatsAtt", "tabStatsDef", "tabStatsGardien" ,"tabEvoPosition", "password")
-    dbWriteTable(con, "infoPoolers", infoPooler)
+    dbWriteTable(con, "infoPoolers", infoPooler, overwrite = T)
     
   } else{
     
@@ -69,7 +69,7 @@ createPoolers <- function(poolerName, poolerColor, infoAlignement, password){
 
 
 #infoAlignement<- createAleatoireTeam()
-#createJsonPoolers("Xav", "Rouge" , infoAlignement)
+#createPoolers("Xav", "Rouge" , infoAlignement)
 
 #infoAlignement<- createAleatoireTeam()
 #createJsonPoolers("Alex", "Bleu" , infoAlignement)

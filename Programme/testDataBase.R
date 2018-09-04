@@ -11,13 +11,14 @@ dbExistsTable(con,"statsGardienRich")
 dbReadTable(con, "statsDefAlex")
 dbReadTable(con, "statsAttRich")
 dbReadTable(con, "statsDefRich")
-dbReadTable(con, "statsAttAlex")
+dbReadTable(con, "statsAttXav")
 
 dbReadTable(con, "infoEchange")
 
 dbReadTable(con,"ConfirmeEchange1")
 
 ##Initialisation table infoEchange
+
 infoEchanges<- data.frame(matrix(rep(NA,8),1,8))
 colnames(infoEchanges)<- c("Num", "Poolers1", "Joueurs_offert_1", "Echange", "Joueurs_offert_2", "Poolers2", "Date", "Statue") 
 infoEchanges

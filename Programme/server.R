@@ -6,40 +6,47 @@ server <- function(input, output, session) {
   ######################
   
   output$graph_total <- renderPlot({
-    classement<- classementPoolersTotal()
-    barplot(classement[,3],xlab = 'Points',
-            main = 'Classement General',
-            col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
-            names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
-    box()
+    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      classement<- classementPoolersTotal()
+      barplot(classement[,3],xlab = 'Points',
+              main = 'Classement General',
+              col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
+              names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+      box()
+    }
   })
   
   output$graph_attaquant <- renderPlot({ # on fait appel ? la fonction 'renderPlot' cette fois car notre sortie sera un graphique
-    classement<- classementAttPoolers()
-    barplot(classement[,3],xlab = 'Points',
-            main = 'Classement Attaquants',
-            col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
-            names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
-    box()
+    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      classement<- classementAttPoolers()
+      barplot(classement[,3],xlab = 'Points',
+              main = 'Classement Attaquants',
+              col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
+              names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+      box()
+    }
   })
   
   output$graph_defensseur <- renderPlot({ 
-    classement<- classementDefPoolers()
-    barplot(classement[,3],xlab = 'Points',
-            main = 'Classement Defenseurs',
-            col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
-            names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
-    box()
-    
+    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      classement<- classementDefPoolers()
+        barplot(classement[,3],xlab = 'Points',
+                main = 'Classement Defenseurs',
+                col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
+                names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+        box()
+    }
   })
   
   output$graph_gardien <- renderPlot({ # on fait appel ? la fonction 'renderPlot' cette fois car notre sortie sera un graphique
-    classement<- classementGardiensPoolers()
-    barplot(classement[,3],xlab = 'Points',
-            main = 'Classement Gardiens',
-            col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
-            names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
-    box()
+    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      classement<- classementGardiensPoolers()
+      barplot(classement[,3],xlab = 'Points',
+              main = 'Classement Gardiens',
+              col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
+              names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+      box()
+    }
   })
   
   ###########################
@@ -49,17 +56,19 @@ server <- function(input, output, session) {
   
   lapply(c("statsJoueursPooler", "statsDefenseursPooler", "statsGardiensPooler"), function(i){
     output[[i]] <- DT::renderDataTable({
-      if (i == "statsJoueursPooler"){
-        statsPoolersChoisi <- miseEnFormeStatsAttPoolers(input$statsPoolers)
-        datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
-      }
-      else if (i == "statsDefenseursPooler"){
-        statsPoolersChoisi <- miseEnFormeStatsDefPoolers(input$statsPoolers)
-        datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
-      }
-      else if (i == "statsGardiensPooler"){
-        statsPoolersChoisi <- miseEnFormeStatsGardiensPoolers(input$statsPoolers)
-        datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
+      if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+        if (i == "statsJoueursPooler"){
+          statsPoolersChoisi <- miseEnFormeStatsAttPoolers(input$statsPoolers)
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
+        }
+        else if (i == "statsDefenseursPooler"){
+          statsPoolersChoisi <- miseEnFormeStatsDefPoolers(input$statsPoolers)
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
+        }
+        else if (i == "statsGardiensPooler"){
+          statsPoolersChoisi <- miseEnFormeStatsGardiensPoolers(input$statsPoolers)
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
+        }
       }
     })
   })
@@ -71,19 +80,21 @@ server <- function(input, output, session) {
   
   lapply(c("listJoueur1", "listJoueur2"), function(i){
       output[[i]]<- renderUI({
-        
+        if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
           if (i == "listJoueur1"){
             nom <- input$nomPoolers1
           } else{
             nom <- input$nomPoolers2
           }
-        
-          listeJoueur<-rbind(matrix(dbReadTable(con, paste0("statsAtt", nom))$Joueur, 12,1), 
-                            matrix(dbReadTable(con, paste0("statsDef", nom))$Joueur,6,1), 
-                            matrix(dbReadTable(con, paste0("statsGardiens", nom))$Joueur,3,1)) 
+          
+          ###Faire en sorte de ne prendre seulement les joueurs qui n'ont pas été trade #######
+          listeJoueur<-rbind(matrix(dbReadTable(con, paste0("statsAtt", nom))$Joueur, length(dbReadTable(con, paste0("statsAtt", nom))$Joueur),1), 
+                            matrix(dbReadTable(con, paste0("statsDef", nom))$Joueur,length(dbReadTable(con, paste0("statsDef", nom))$Joueur),1), 
+                            matrix(dbReadTable(con, paste0("statsGardiens", nom))$Joueur,length(dbReadTable(con, paste0("statsGardiens", nom))$Joueur),1)) 
     
           selectInput(inputId = i, label = "Liste Joueur", width = "100%", size = 10,
                       multiple = T ,choices = listeJoueur, selected = 0, selectize=F)
+        }
     }) 
   })
   
@@ -118,7 +129,7 @@ server <- function(input, output, session) {
         output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
         output$choixEchange<-  renderUI({
           selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
-                      multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 0)
+                      multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 1)
         })
       }
     }
@@ -128,7 +139,7 @@ server <- function(input, output, session) {
   
   output$choixEchange<-  renderUI({
             selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
-                                          multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 0)
+                                          multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 1)
   })
   
   observeEvent(input$tradeAction, {
@@ -138,11 +149,13 @@ server <- function(input, output, session) {
       
       if (input$choixAction == "Accepter"){
         
-        echangeAccepter(input$nomTrade,input$choixEchange, input$motPasse)
+        echangeAccepter(input$nomTrade,input$noEchange, input$motPasse)
+        output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
         
       }else if (input$choixAction == "Refuser"){
         
-        echangeRefuser(input$nomTrade, input$choixEchange, input$motPasse)
+        echangeRefuser(input$nomTrade, input$noEchange, input$motPasse)
+        output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
       
       }
     }
