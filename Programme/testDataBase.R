@@ -12,6 +12,7 @@ dbReadTable(con, "statsDefAlex")
 dbReadTable(con, "statsAttRich")
 dbReadTable(con, "statsDefRich")
 dbReadTable(con, "statsAttXav")
+dbReadTable(con, "statsGardiensXav")
 
 dbReadTable(con, "infoEchange")
 

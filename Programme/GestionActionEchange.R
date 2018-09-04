@@ -13,14 +13,14 @@ echangeAccepter<- function(nomPooler, numEchange, password){
         tabConfirtmTemp[1,1]<- 1
         tabConfirtmTemp[2,1]<- nomPooler
         dbWriteTable(con, paste0("ConfirmeEchange", numEchange), tabConfirtmTemp, overwrite = T)
-        
+        showNotification("L'echange a bien ete accepter")
       }else{
         
         if(nomPooler %in% tabConfirtmTemp$Confirmation){ 
           showNotification("Vous avez deja accepter cette transaction")
         }else{
           
-          trade(numEchange) ## T'es rendu là!!!! lâche pas
+          trade(numEchange)
           dbRemoveTable(con, paste0("ConfirmeEchange", numEchange))
           infoEchangeTemp[numEchange,]$Statue<- "Accepter"
           dbWriteTable(con, "infoEchange", infoEchangeTemp, overwrite = T)
@@ -92,6 +92,7 @@ trade<- function(numEchange){
     
     for (joueur in 1:length(listJoueursImpliquer[[1]])){
       for (pos in c("statsAtt", "statsDef", "statsGardiens")){
+        
         tabPositionDonneur<- dbReadTable(con, paste0(pos, tabTrades[numEchange,][[paste0("Poolers", i)]]))
 
         if (listJoueursImpliquer[[i]][joueur] %in% tabPositionDonneur$Joueurs){
@@ -99,15 +100,28 @@ trade<- function(numEchange){
           
           posInTable<- match(listJoueursImpliquer[[i]][joueur], tabPositionDonneur$Joueurs)
           tabPositionDonneur[posInTable, ]$Statues <- "Trade"
-          
           newLineTabPosReceveur<- tabPositionDonneur[posInTable,]
-          newLineTabPosReceveur[,c(3,11:12)]<- c("New", as.character(Sys.Date( )), as.character(Sys.Date( )))
-          newLineTabPosReceveur[,c(8:10)]<- c(as.numeric(newLineTabPosReceveur$GP), newLineTabPosReceveur$Buts, 
-                                              newLineTabPosReceveur$Passes)
           
-          
-          tabPositionReceveur<- rbind(tabPositionReceveur, newLineTabPosReceveur)
-          tabPositionReceveur[,5:10]<- as.numeric(as.character(unlist(tabPositionReceveur[,5:10])))
+          if (pos %in% c("statsAtt", "statsDef")){
+            
+            newLineTabPosReceveur[,c(3,11:12)]<- c("New", as.character(Sys.Date( )), as.character(Sys.Date( )))
+            newLineTabPosReceveur[,c(8:10)]<- c(newLineTabPosReceveur$GP, newLineTabPosReceveur$Buts, 
+                                                newLineTabPosReceveur$Passes)
+            
+            
+            tabPositionReceveur<- rbind(tabPositionReceveur, newLineTabPosReceveur)
+            tabPositionReceveur[,5:10]<- as.numeric(as.character(unlist(tabPositionReceveur[,5:10])))
+            
+          }else if (pos %in% c("statsGardiens")){
+            
+            newLineTabPosReceveur[,c(3, 17:18)]<- c("New", as.character(Sys.Date( )), as.character(Sys.Date( )))
+            newLineTabPosReceveur[,c(11:16)]<- c(newLineTabPosReceveur$GP, newLineTabPosReceveur$Win, 
+                                                 newLineTabPosReceveur$OL, newLineTabPosReceveur$BL, 
+                                                 newLineTabPosReceveur$Buts, newLineTabPosReceveur$Passes)
+            
+            tabPositionReceveur<- rbind(tabPositionReceveur, newLineTabPosReceveur)
+            tabPositionReceveur<- as.numeric(as.character(unlist(tabPositionReceveur[,5:16])))
+          }
           
           dbWriteTable(con, paste0(pos, tabTrades[numEchange,][[paste0("Poolers", i)]]), 
                        tabPositionDonneur, overwrite = T)

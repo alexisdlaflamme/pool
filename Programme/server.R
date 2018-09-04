@@ -157,6 +157,7 @@ server <- function(input, output, session) {
         echangeRefuser(input$nomTrade, input$noEchange, input$motPasse)
         output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
       
+        
       }
     }
     
