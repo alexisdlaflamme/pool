@@ -120,7 +120,7 @@ trade<- function(numEchange){
                                                  newLineTabPosReceveur$Buts, newLineTabPosReceveur$Passes)
             
             tabPositionReceveur<- rbind(tabPositionReceveur, newLineTabPosReceveur)
-            tabPositionReceveur<- as.numeric(as.character(unlist(tabPositionReceveur[,5:16])))
+            tabPositionReceveur[,5:16]<- as.numeric(as.character(unlist(tabPositionReceveur[,5:16])))
           }
           
           dbWriteTable(con, paste0(pos, tabTrades[numEchange,][[paste0("Poolers", i)]]), 

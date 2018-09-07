@@ -17,8 +17,12 @@ ui <-navbarPage("Pool 2018-2019",
                            column(5,offset = 1,
                                   plotOutput("graph_gardien",width = '100%')                   
                            )
+                         ),
+                         fluidRow(
+                           column(8, offset = 2,
+                                  plotOutput("evoPtsJours",width = '100%')
+                            )
                          )
-                         
                 ),
 ##########################################
 #     Section affichage stats Poolers    #

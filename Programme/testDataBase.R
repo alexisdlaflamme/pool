@@ -3,7 +3,7 @@ dbListTables(con)
 test<-dbReadTable(con, "statsJoueurs")
 
 dbListTables(con)
-
+dbReadTable(con, "infoPoolers")
 
 #dbRemoveTable(con,"infoPoolers")
 dbExistsTable(con,"statsGardienRich")
@@ -33,3 +33,16 @@ test<- dbReadTable(con,"infoPoolers")[,-7]
 a<-matrix(c("allo1", "allo2", "allo3", 'allo4', "allo5"),5, 1)
 colnames(a)<- c("password")
 dbWriteTable(con, "infoPoolers", cbind(test,a), overwrite = T)
+
+
+
+a<-matrix(c(1,2,3,4),2,2)
+
+colnames(a)<- c("Allo1", "Allo2")
+rownames(a)<- c("Yolo1", "Yolo2")
+
+a<-as.data.frame(a)
+
+dbWriteTable(con, "test", a)
+dbReadTable(con,"test")
+dbRemoveTable(con, "test")
