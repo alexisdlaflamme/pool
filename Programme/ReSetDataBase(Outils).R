@@ -1,6 +1,11 @@
 source(paste0(DirPGM,"CreatePooler.R"))
 source(paste0(DirPGM,"MiseAJourPtsPoolers.R"))
-source(paste0(DirPGM,"updateStatsJoueur.R"))
+source(paste0(DirPGM,"UpdateStatsJoueurgardiens.R"))
+
+source(paste0(DirPGM,"InitTableauDeBase.R"))
+
+UpdateStatsAttDefNHL()
+UpdateStatsGardiens()
 
 #Initialise Tableau InfoPoolers
 infoPooler<- as.data.frame(matrix(c(rep(NA,7)), nrow = 1, ncol = 7))

@@ -210,6 +210,19 @@ server <- function(input, output, session) {
       
   })
   
+  ###############################
+  #     Section Update Pool     #
+  ###############################
   
+  lapply(c("statsJoueurs", "statsGardiens"), function(i){
+    output[[i]] <- DT::renderDataTable({
+      if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+        tableau<- dbReadTable(con, i)
+        tableau<- tableau[ order(tableau$PTS, decreasing = T),]
+        
+        datatable(tableau[1:40,],options = list("pageLength" = 40, dom = 't'))
+      }
+    })
+  })
   
 }

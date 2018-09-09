@@ -3,6 +3,7 @@ ui <-navbarPage("Pool 2018-2019",
 ###########################
 #     Section Acceuil     #
 ###########################
+
                 tabPanel("Acceuil",
                          fluidRow(
                            column(5,
@@ -27,10 +28,12 @@ ui <-navbarPage("Pool 2018-2019",
 ##########################################
 #     Section affichage stats Poolers    #
 ##########################################
+
                 tabPanel("Stats Poolers",
                          
                          radioGroupButtons("statsPoolers", label = "" , size = "lg", individual = T,
                                            choices = dbReadTable(con,"infoPoolers")$Nom),
+                         
                          HTML( paste(h4("Attaquant"))),
                          dataTableOutput("statsJoueursPooler"),
                          HTML( paste('<br/>', h4("Defenseurs"))),
@@ -42,6 +45,7 @@ ui <-navbarPage("Pool 2018-2019",
 ###########################
 #     Section Échange     #
 ###########################
+
                 tabPanel("Echange",
                         fluidRow(
                           column(2, 
@@ -117,6 +121,7 @@ ui <-navbarPage("Pool 2018-2019",
 #################################
 #     Section Ajout Poolers     #
 #################################
+
                 tabPanel("Ajout Pooler",
                          fluidRow(
                            column(2,
@@ -147,5 +152,42 @@ ui <-navbarPage("Pool 2018-2019",
                                   )
                            )
                          )
-                )             
+                ),
+###############################
+#     Section Update Pool     #
+###############################
+
+                tabPanel("Update",
+                         fluidRow(
+                           column(12, align="center",
+                                  HTML( paste(h2("Points joueurs/gardiens de la NHL")))
+                           )
+                         ),
+                         fluidRow(
+                           column(5,
+                                  HTML( paste(h4("Joueurs"))),
+                                  dataTableOutput("statsJoueurs")
+                                  
+                           ),
+                           column(5, offset = 1,
+                                  HTML( paste(h4("Gardiens"))),
+                                  dataTableOutput("statsGardiens")
+                           )
+                         ),
+                         fluidRow(
+                           column(4, offset = 4,
+                                  HTML('<br/>'), HTML('<br/>'),
+                                  actionButton("updateStatsJouerNHL", "Mettre a jours", width = "100%"),
+                                  HTML('<br/>'), HTML('<br/>')
+                           )
+                         ),
+                         fluidRow(
+                           column(12, align="center",
+                                  HTML( paste(h2("Toutes les statistique du pool"))),
+                                  HTML('<br/>'), HTML('<br/>'),
+                                  actionButton("updateAll", "Mettre a jours", width = "33%")
+                                  
+                                  )
+                         )
+                )
 )
