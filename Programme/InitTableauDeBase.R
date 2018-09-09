@@ -17,3 +17,11 @@ if (!dbExistsTable(con,"infoEchange")){
   dbWriteTable(con, "infoEchange" ,infoEchanges, overwrite = T )
 
 }
+
+if (!dbExistsTable(con,"UpdatePassword")){
+  
+  password<- matrix(c("!updatePool2."))
+  colnames(password)<- "password"
+  dbWriteTable(con, "UpdatePassword", as.data.frame(password), overwrite = T)
+  
+}

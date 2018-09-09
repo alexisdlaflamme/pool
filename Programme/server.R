@@ -10,7 +10,7 @@ server <- function(input, output, session) {
       classement<- classementPoolersTotal()
       barplot(classement[,3],xlab = 'Points',
               main = 'Classement General',
-              col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
+              col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
               names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
       box()
     }
@@ -21,9 +21,9 @@ server <- function(input, output, session) {
       classement<- classementAttPoolers()
       barplot(classement[,3],xlab = 'Points',
               main = 'Classement Attaquants',
-              col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
-              names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
-      box()
+              col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
+              names.arg= as.character(classement[,1]), las = 1,xlim =c(0,max(classement[,3])*1.2))
+    box()
     }
   })
   
@@ -32,7 +32,7 @@ server <- function(input, output, session) {
       classement<- classementDefPoolers()
         barplot(classement[,3],xlab = 'Points',
                 main = 'Classement Defenseurs',
-                col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
+                col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
                 names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
         box()
     }
@@ -43,7 +43,7 @@ server <- function(input, output, session) {
       classement<- classementGardiensPoolers()
       barplot(classement[,3],xlab = 'Points',
               main = 'Classement Gardiens',
-              col = classement[,2], border = "black",horiz=TRUE,beside = TRUE,
+              col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
               names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
       box()
     }
@@ -216,13 +216,60 @@ server <- function(input, output, session) {
   
   lapply(c("statsJoueurs", "statsGardiens"), function(i){
     output[[i]] <- DT::renderDataTable({
-      if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      if (dbExistsTable(con, "statsGardiens")){
         tableau<- dbReadTable(con, i)
-        tableau<- tableau[ order(tableau$PTS, decreasing = T),]
+        
+        if (i == "statsGardiens"){
+          tableau<- tableau[ order(tableau$Win, decreasing = T),]
+        }else{
+          tableau<- tableau[ order(tableau$PTS, decreasing = T),]
+        }
         
         datatable(tableau[1:40,],options = list("pageLength" = 40, dom = 't'))
       }
     })
+  })
+  
+  observeEvent(input$updateStatsJouerNHL, {
+    
+    if (input$motPasseUpdateNHL == dbReadTable(con, "UpdatePassword")[1,1]){
+    
+    UpdateStatsAttDefNHL()
+    UpdateStatsGardiens()
+    
+    showNotification("Les statistiques des joueurs de la NHL ont ete misent a jours!")
+    }else{
+      
+      showNotification("Mot de passe invalide")
+    }
+    
+  })
+  
+  observeEvent(input$updateAll, {
+    
+    if (input$motPasseUpdatePool == dbReadTable(con, "UpdatePassword")[1,1]){
+      if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      info<- dbReadTable(con, "infoPoolers")
+      
+      UpdateStatsAttDefNHL()
+      UpdateStatsGardiens()
+      
+      for (pooler in info$Nom){
+        miseAJourPtsPoolers(pooler)
+      }
+      
+      updateEvo(info$Nom)
+      
+      showNotification("Le pool a ete mis à jours!")
+      }else{
+        showNotification("Le Pool ne peut pas etre mis a jour s'il n'y a pas de poolers inscrient")
+      }
+        
+    }else{
+      
+      showNotification("Mot de passe invalide")
+    }
+    
   })
   
 }

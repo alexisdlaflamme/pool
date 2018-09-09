@@ -1,10 +1,6 @@
-
-listNomPoolers<- c("Alex", "Rich", "Xav")
-
-
-uptdateEvo<- function(listNomPoolers){
+updateEvo<- function(listNomPoolers){
   
-  createUnexistingEvoTable()
+  createUnexistingEvoTable(listNomPoolers)
   updateEvoPtsTotal(listNomPoolers)
   updateEvoPtsJours(listNomPoolers)
 }

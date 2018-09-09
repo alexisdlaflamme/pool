@@ -1,6 +1,6 @@
 dbListTables(con)
 
-test<-dbReadTable(con, "statsJoueurs")
+dbReadTable(con, "statsJoueurs")
 
 dbListTables(con)
 dbReadTable(con, "infoPoolers")
@@ -46,3 +46,10 @@ a<-as.data.frame(a)
 dbWriteTable(con, "test", a)
 dbReadTable(con,"test")
 dbReadTable(con, "evoPointsTotal")
+
+
+a<- matrix(c("!updatePool2."))
+colnames(a)<- "password"
+a
+as.data
+dbWriteTable(con, "UpdatePassword", as.data.frame(a))

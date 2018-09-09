@@ -175,17 +175,29 @@ ui <-navbarPage("Pool 2018-2019",
                            )
                          ),
                          fluidRow(
-                           column(4, offset = 4,
+                           column(4, offset = 2, align="left",
                                   HTML('<br/>'), HTML('<br/>'),
-                                  actionButton("updateStatsJouerNHL", "Mettre a jours", width = "100%"),
+                                  passwordInput(inputId = "motPasseUpdateNHL", label = "Entrez le mot de passe de mise a jour", width = "100%"),
+                                  HTML('<br/>'), HTML('<br/>')
+                           ),
+                           column(5, offset = 1, style = "margin-top: 25px;",
+                                  HTML('<br/>'), HTML('<br/>'),
+                                  actionButton("updateStatsJouerNHL", "Mettre a jours", width = "50%"),
                                   HTML('<br/>'), HTML('<br/>')
                            )
                          ),
                          fluidRow(
                            column(12, align="center",
                                   HTML( paste(h2("Toutes les statistique du pool"))),
-                                  HTML('<br/>'), HTML('<br/>'),
-                                  actionButton("updateAll", "Mettre a jours", width = "33%")
+                                  HTML('<br/>'), HTML('<br/>')
+                                  )
+                         ),
+                         fluidRow(
+                           column(4, offset = 2, align="left",
+                                  passwordInput(inputId = "motPasseUpdatePool", label = "Entrez le mot de passe de mise a jour", width = "100%")
+                           ),
+                           column(5, offset = 1, style = "margin-top: 25px;",
+                                  actionButton("updateAll", "Mettre a jours", width = "50%")
                                   
                                   )
                          )
