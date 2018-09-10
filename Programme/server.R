@@ -313,27 +313,32 @@ server <- function(input, output, session) {
   
   observeEvent(input$createNewPooler, {
     
-    infoJoueursGardiens<- as.data.frame(rbind( c(input$att1, "NA", "Actif", "Att"),
-                                               c(input$att2, "NA", "Actif", "Att"),
-                                               c(input$att3, "NA", "Actif", "Att"),
-                                               c(input$att4, "NA", "Actif", "Att"),
-                                               c(input$att5, "NA", "Actif", "Att"),
-                                               c(input$att6, "NA", "Actif", "Att"),
-                                               c(input$att7, "NA", "Actif", "Att"),
-                                               c(input$att8, "NA", "Actif", "Att"),
-                                               c(input$att9, "NA", "Actif", "Att"),
-                                               c(input$att10, "NA", "Actif", "Att"),
-                                               c(input$att11, "NA", "Actif", "Att"),
-                                               c(input$att12, "NA", "Actif", "Att"),
-                                               c(input$def1, "NA", "Actif", "Def"),
-                                               c(input$def2, "NA", "Actif", "Def"),
-                                               c(input$def3, "NA", "Actif", "Def"),
-                                               c(input$def4, "NA", "Actif", "Def"),
-                                               c(input$def5, "NA", "Actif", "Def"),
-                                               c(input$def6, "NA", "Actif", "Def"),
-                                               c(input$goal1, "NA", "Actif", "G"),
-                                               c(input$goal2, "NA", "Actif", "G"),
-                                               c(input$goal3, "NA", "Actif", "G")
+    infoJoueursGardiens<- as.data.frame(rbind( c(input$att1, "NA", "New", "Att"),
+                                               c(input$att2, "NA", "New", "Att"),
+                                               c(input$att3, "NA", "New", "Att"),
+                                               c(input$att4, "NA", "New", "Att"),
+                                               c(input$att5, "NA", "New", "Att"),
+                                               c(input$att6, "NA", "New", "Att"),
+                                               c(input$att7, "NA", "New", "Att"),
+                                               c(input$att8, "NA", "New", "Att"),
+                                               c(input$att9, "NA", "New", "Att"),
+                                               c(input$att10, "NA", "New", "Att"),
+                                               c(input$att11, "NA", "New", "Att"),
+                                               c(input$att12, "NA", "New", "Att"),
+                                               c(input$att13, "NA", "New", "Att"),
+                                               c(input$att14, "NA", "New", "Att"),
+                                               c(input$att15, "NA", "New", "Att"),
+                                               c(input$def1, "NA", "New", "Def"),
+                                               c(input$def2, "NA", "New", "Def"),
+                                               c(input$def3, "NA", "New", "Def"),
+                                               c(input$def4, "NA", "New", "Def"),
+                                               c(input$def5, "NA", "New", "Def"),
+                                               c(input$def6, "NA", "New", "Def"),
+                                               c(input$def7, "NA", "New", "Def"),
+                                               c(input$def8, "NA", "New", "Def"),
+                                               c(input$goal1, "NA", "New", "G"),
+                                               c(input$goal2, "NA", "New", "G"),
+                                               c(input$goal3, "NA", "New", "G")
                                         ))
     colnames(infoJoueursGardiens)<-c("Joueurs", "Equipe", "Statue", "POS")
     
@@ -342,7 +347,7 @@ server <- function(input, output, session) {
     if (F %in% verifEntrees){
       showNotification("Tout les joueurs doivent avoir un nom non-vide ou contenir des caractères valides...")
     }
-    else if(input$motPasse == input$motPasseConfirm){
+    else if(input$motPasseCreate == input$motPasseConfirm){
       createPoolers(input$nomPooler, input$colorPooler,  infoJoueursGardiens, input$motPasseCreate)
       
       showNotification(paste("Le pooler", input$nomPooler, "a bien été créée!"))
