@@ -33,7 +33,6 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                          
                          radioGroupButtons("statsPoolers", label = "" , size = "lg", individual = T,
                                            choices = dbReadTable(con,"infoPoolers")$Nom),
-                         
                          HTML( paste(h4("Attaquant"))),
                          dataTableOutput("statsJoueursPooler"),
                          HTML( paste('<br/>', h4("Defenseurs"))),
@@ -63,12 +62,11 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                                               selectInput("StatueNew",label = "Statue du nouveau joueur",choices = c("Actif","Backup"),
                                                           selected = 0)),
                              dataTableOutput('Selection'),
-                             column(8,offset = 2,
-                                    passwordInput("password", label = "Mot de passe")
+                             HTML('<br/>'),
+                             passwordInput("password", label = "Mot de passe"),
+                             actionBttn('Confirm','Confirmer',style = 'jelly',color = 'primary',size = 'sm')
+                             
                              ),
-                             column(2, offset = 4,
-                                    actionBttn('Confirm','Confirmer',style = 'jelly',color = 'primary',size = 'sm')
-                             )),
                            mainPanel(
                              column(6, offset = 4,
                                     titlePanel('Choix des joueurs')),
