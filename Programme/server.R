@@ -8,10 +8,14 @@ server <- function(input, output, session) {
   output$graph_total <- renderPlot({
     if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
       classement<- classementPoolersTotal()
+      bp<-barplot(classement[,3], plot = F)
+      colnames(bp)<- "y"
       barplot(classement[,3],xlab = 'Points',
               main = 'Classement General',
               col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
               names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+      par(xpd=T)
+      text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
       box()
     }
   })
@@ -19,32 +23,44 @@ server <- function(input, output, session) {
   output$graph_attaquant <- renderPlot({ # on fait appel ? la fonction 'renderPlot' cette fois car notre sortie sera un graphique
     if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
       classement<- classementAttPoolers()
+      bp<-barplot(classement[,3], plot = F)
+      colnames(bp)<- "y"
       barplot(classement[,3],xlab = 'Points',
               main = 'Classement Attaquants',
               col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
               names.arg= as.character(classement[,1]), las = 1,xlim =c(0,max(classement[,3])*1.2))
-    box()
+      par(xpd=T)
+      text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
+      box()
     }
   })
   
   output$graph_defensseur <- renderPlot({ 
     if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
       classement<- classementDefPoolers()
-        barplot(classement[,3],xlab = 'Points',
+      bp<-barplot(classement[,3], plot = F)
+      colnames(bp)<- "y"
+      barplot(classement[,3],xlab = 'Points',
                 main = 'Classement Defenseurs',
                 col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
                 names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
-        box()
+      par(xpd=T)
+      text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
+      box()
     }
   })
   
   output$graph_gardien <- renderPlot({ # on fait appel ? la fonction 'renderPlot' cette fois car notre sortie sera un graphique
     if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
       classement<- classementGardiensPoolers()
+      bp<-barplot(classement[,3], plot = F)
+      colnames(bp)<- "y"
       barplot(classement[,3],xlab = 'Points',
               main = 'Classement Gardiens',
               col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
               names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+      par(xpd=T)
+      text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
       box()
     }
   })
