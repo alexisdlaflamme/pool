@@ -1,4 +1,4 @@
-ui <-navbarPage("Pool 2018-2019",
+ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
 
 ###########################
 #     Section Acceuil     #
@@ -40,6 +40,43 @@ ui <-navbarPage("Pool 2018-2019",
                          dataTableOutput("statsDefenseursPooler"),
                          HTML( paste('<br/>', h4("Gardiens"))),
                          dataTableOutput("statsGardiensPooler")
+                         
+                ),
+#########################
+# Gestion d'alignemant  # 
+#########################
+                tabPanel("Gestion Alignement",
+                         titlePanel('Gestion Alignement'),
+                         sidebarLayout(
+                           
+                           sidebarPanel(
+                             
+                             selectInput(inputId = "PoolerName", label = "Nom du pooler", width = "100%",
+                                         choices = dbReadTable(con,"infoPoolers")$Nom, selected = 0),
+                             
+                             
+                             selectInput(inputId = "Position", label = "Position", width = "100%",
+                                         choices = c('Attaquants','Defenseurs','Gardiens'), selected = 0),
+                             selectInput("OptionNew",label = "Choix mouvement",choices = c("Gestion Alignement","Nouveaux Joueurs"),
+                                         selected = 0),
+                             conditionalPanel(condition = " input.OptionNew == 'Nouveaux Joueurs'",
+                                              selectInput("StatueNew",label = "Statue du nouveau joueur",choices = c("Actif","Backup"),
+                                                          selected = 0)),
+                             dataTableOutput('Selection'),
+                             column(8,offset = 2,
+                                    passwordInput("password", label = "Mot de passe")
+                             ),
+                             column(2, offset = 4,
+                                    actionBttn('Confirm','Confirmer',style = 'jelly',color = 'primary',size = 'sm')
+                             )),
+                           mainPanel(
+                             column(6, offset = 4,
+                                    titlePanel('Choix des joueurs')),
+                             
+                             dataTableOutput("statsJoueursAlignement")
+                             
+                           )
+                         )
                          
                 ),
 ###########################

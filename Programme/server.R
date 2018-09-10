@@ -90,6 +90,132 @@ server <- function(input, output, session) {
     })
   })
   
+  ######################
+  ##Gestion alignement##
+  ######################
+  output$statsJoueursAlignement<- DT::renderDataTable({
+    if( input$Position == 'Attaquants'){
+      Pooler <- miseEnFormeStatsAttPoolers(input$PoolerName)
+    }
+    else if (input$Position == 'Defenseurs'){
+      Pooler <- miseEnFormeStatsDefPoolers(input$PoolerName)
+    }
+    else if (input$Position == 'Gardiens'){
+      Pooler <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
+    }
+    datatable(Pooler,options = list("pageLength" = length(Pooler[,1]), dom = 't'),rownames = FALSE,
+              selection =list(mode = 'multiple',target = 'row'))
+    
+  })
+  
+  output$Selection <- DT::renderDataTable({
+    s<- input$statsJoueursAlignement_rows_selected
+    if( input$Position == 'Attaquants'){
+      Pooler <- miseEnFormeStatsAttPoolers(input$PoolerName)
+    }
+    else if (input$Position == 'Defenseurs'){
+      Pooler <- miseEnFormeStatsDefPoolers(input$PoolerName)
+    }
+    else if (input$Position == 'Gardiens'){
+      Pooler <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
+    }
+    datatable(Pooler[s,c(1,3)],options = list(dom = 't'),style = 'material')
+  })
+  
+  observeEvent(input$Confirm, {
+    motDePasse <- input$password
+    if (motDePasse != dbReadTable(con,"infoPoolers")[dbReadTable(con,"infoPoolers")$Nom == input$PoolerName,7] ){
+      showNotification("Mauvais mot de passe",type = "error")
+    }
+    else if (input$OptionNew == "Gestion Alignement"){
+      if( input$Position == 'Attaquants'){
+        Pooler <- miseEnFormeStatsAttPoolers(input$PoolerName)
+      }
+      else if (input$Position == 'Defenseurs'){
+        Pooler <- miseEnFormeStatsDefPoolers(input$PoolerName)
+      }
+      else if (input$Position == 'Gardiens'){
+        Pooler <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
+      }
+      d<-input$statsJoueursAlignement_rows_selected
+      s<- Pooler[d,1]
+      name<- input$PoolerName
+      pos <- input$Position
+      if (gestion(s,name,pos) == F){
+        showNotification("Mouvement impossible",type = "message")
+      }
+      else {
+        if ((gestion(s,name,pos) == T) && (input$Position == "Attaquants")){
+          player <- dataJoueur(s,name,pos)
+          dbWriteTable(con,paste0('statsAtt',input$PoolerName),player,overwrite = T)
+          
+        }
+        else if ((gestion(s,name,pos) == T) && (input$Position == "Defenseurs")){
+          player <- dataJoueur(s,name,pos)
+          dbWriteTable(con,paste0('statsAtt',input$PoolerName),player,overwrite = T)
+          
+        }
+        else{
+          player <- dataJoueur(s,name,pos)
+          dbWriteTable(con,paste0('statsAtt',input$PoolerName),player,overwrite = T)
+        }
+        output$statsJoueursAlignement<- DT::renderDataTable({
+          if (input$Position == "Attaquants"){
+            joueur <- miseEnFormeStatsAttPoolers(input$PoolerName)
+          }
+          if (input$Position == "Defenseurs"){
+            joueur <- miseEnFormeStatsDefPoolers(input$PoolerName)
+          }
+          if (input$Position == "Gardiens"){
+            joueur <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
+          }
+          datatable(joueur,
+                    options = list("pageLength" = length(joueur[,1]),
+                                   dom = 't'),rownames = FALSE)
+          
+        })
+      }
+      
+    }
+    else{
+      if( input$Position == 'Attaquants'){
+        Pooler <- miseEnFormeStatsAttPoolers(input$PoolerName)
+      }
+      else if (input$Position == 'Defenseurs'){
+        Pooler <- miseEnFormeStatsDefPoolers(input$PoolerName)
+      }
+      else if (input$Position == 'Gardiens'){
+        Pooler <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
+      }
+      d<-input$statsJoueursAlignement_rows_selected
+      s<- Pooler[d,1]
+      name<- input$PoolerName
+      pos <- input$Position
+      statue <- input$StatueNew
+      if (NbreNew(s,name,pos) == F){
+        showNotification("Mouvement impossible",type = "message")
+      }
+      else{
+        Joueurnew(s,name,pos,statue)
+        output$statsJoueursAlignement<- DT::renderDataTable({
+          if (input$Position == "Attaquants"){
+            joueur <- miseEnFormeStatsAttPoolers(input$PoolerName)
+          }
+          if (input$Position == "Defenseurs"){
+            joueur <- miseEnFormeStatsDefPoolers(input$PoolerName)
+          }
+          if (input$Position == "Gardiens"){
+            joueur <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
+          }
+          datatable(joueur,
+                    options = list("pageLength" = length(joueur[,1]),
+                                   dom = 't'),rownames = FALSE)
+          
+        })
+      }
+    }
+  })
+  
   ############
   # Échange  #
   ############
