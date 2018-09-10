@@ -20,7 +20,7 @@ source(paste0(DirPGM, "ServerGestionDechange.R"))
 source(paste0(DirPGM, "GestionActionEchange.R"))
 source(paste0(DirPGM, "MiseAJourPtsPoolers.R"))
 source(paste0(DirPGM, "UpdateTabEvoClassementPoolers.R"))
-source(paste0(DirPGM, "UpdateStatsJoueurgardiens.R"))
+source(paste0(DirPGM, "UpdateStatsJoueurGardiens.R"))
 
 #Programmes interface et serveur 
 source(paste0(DirPGM, "ui.R"))
