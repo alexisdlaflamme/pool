@@ -11,7 +11,7 @@ source(paste0(DirPGM,"InitTableauDeBase.R"))
 
 #Programmes utilent pour l'interface ui
 source(paste0(DirPGM, "InterfaceAlignementSelection.R"))
-
+source(paste0(DirPGM, "GestionAlignement.R"))
 #Programme le server
 source(paste0(DirPGM, "MiseEnFormeStatsPoolers.R"))
 source(paste0(DirPGM, "CreatePooler.R"))
@@ -21,6 +21,7 @@ source(paste0(DirPGM, "GestionActionEchange.R"))
 source(paste0(DirPGM, "MiseAJourPtsPoolers.R"))
 source(paste0(DirPGM, "UpdateTabEvoClassementPoolers.R"))
 source(paste0(DirPGM, "UpdateStatsJoueurGardiens.R"))
+
 
 #Programmes interface et serveur 
 source(paste0(DirPGM, "ui.R"))
