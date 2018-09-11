@@ -76,15 +76,15 @@ server <- function(input, output, session) {
       if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
         if (i == "statsJoueursPooler"){
           statsPoolersChoisi <- miseEnFormeStatsAttPoolers(input$statsPoolers)
-          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'), rownames = F)
         }
         else if (i == "statsDefenseursPooler"){
           statsPoolersChoisi <- miseEnFormeStatsDefPoolers(input$statsPoolers)
-          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'), rownames = F)
         }
         else if (i == "statsGardiensPooler"){
           statsPoolersChoisi <- miseEnFormeStatsGardiensPoolers(input$statsPoolers)
-          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'))
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'), rownames = F)
         }
       }
     })
@@ -375,7 +375,7 @@ server <- function(input, output, session) {
           tableau<- tableau[ order(tableau$PTS, decreasing = T),]
         }
         
-        datatable(tableau[1:40,],options = list("pageLength" = 40, dom = 't'))
+        datatable(tableau[1:40,1:8],options = list("pageLength" = 40, dom = 't'), rownames = F)
       }
     })
   })
