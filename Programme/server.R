@@ -94,32 +94,35 @@ server <- function(input, output, session) {
   ##Gestion alignement##
   ######################
   output$statsJoueursAlignement<- DT::renderDataTable({
-    if( input$Position == 'Attaquants'){
-      Pooler <- miseEnFormeStatsAttPoolers(input$PoolerName)
+    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      if( input$Position == 'Attaquants'){
+        Pooler <- miseEnFormeStatsAttPoolers(input$PoolerName)
+      }
+      else if (input$Position == 'Defenseurs'){
+        Pooler <- miseEnFormeStatsDefPoolers(input$PoolerName)
+      }
+      else if (input$Position == 'Gardiens'){
+        Pooler <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
+      }
+      datatable(Pooler,options = list("pageLength" = length(Pooler[,1]), dom = 't'),rownames = FALSE,
+                selection =list(mode = 'multiple',target = 'row'))
     }
-    else if (input$Position == 'Defenseurs'){
-      Pooler <- miseEnFormeStatsDefPoolers(input$PoolerName)
-    }
-    else if (input$Position == 'Gardiens'){
-      Pooler <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
-    }
-    datatable(Pooler,options = list("pageLength" = length(Pooler[,1]), dom = 't'),rownames = FALSE,
-              selection =list(mode = 'multiple',target = 'row'))
-    
   })
   
   output$Selection <- DT::renderDataTable({
-    s<- input$statsJoueursAlignement_rows_selected
-    if( input$Position == 'Attaquants'){
-      Pooler <- miseEnFormeStatsAttPoolers(input$PoolerName)
+    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      s<- input$statsJoueursAlignement_rows_selected
+      if( input$Position == 'Attaquants'){
+        Pooler <- miseEnFormeStatsAttPoolers(input$PoolerName)
+      }
+      else if (input$Position == 'Defenseurs'){
+        Pooler <- miseEnFormeStatsDefPoolers(input$PoolerName)
+      }
+      else if (input$Position == 'Gardiens'){
+        Pooler <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
+      }
+      datatable(Pooler[s,c(1,3)],options = list(dom = 't'),style = 'material')
     }
-    else if (input$Position == 'Defenseurs'){
-      Pooler <- miseEnFormeStatsDefPoolers(input$PoolerName)
-    }
-    else if (input$Position == 'Gardiens'){
-      Pooler <- miseEnFormeStatsGardiensPoolers(input$PoolerName)
-    }
-    datatable(Pooler[s,c(1,3)],options = list(dom = 't'),style = 'material')
   })
   
   observeEvent(input$Confirm, {

@@ -132,28 +132,34 @@ dataJoueur <- function(s,name,pos){
 Joueurnew <- function(s,name,pos,statue){
   if ( pos == "Attaquants"){
     changeActif<-dbReadTable(con, paste0("statsAtt", name))
-    for( i in 1:length(changeActif[,1])){
-      if (changeActif[i,1] %in% s){
-        changeActif[i,3] <- statue
-      }      
+    if (verifValidNew(s, changeActif, statue)){
+      for( i in 1:length(changeActif[,1])){
+        if (changeActif[i,1] %in% s){
+          changeActif[i,3] <- statue
+        }      
+      }
+      dbWriteTable(con,paste0("statsAtt",name),changeActif,overwrite = T)
     }
-    dbWriteTable(con,paste0("statsAtt",name),changeActif,overwrite = T)
   }
   if ( pos == "Defenseurs"){
     changeActif<-dbReadTable(con, paste0("statsDef", name))
-    for( i in 1:length(changeActif[,1])){
-      if (changeActif[i,1] %in% s){
-        changeActif[i,3] <- statue
-      }      
+    if (verifValidNew(s, changeActif, statue)){
+      for( i in 1:length(changeActif[,1])){
+        if (changeActif[i,1] %in% s){
+          changeActif[i,3] <- statue
+        }      
+      }
     }
     dbWriteTable(con,paste0("statsDef",name),changeActif,overwrite = T)
   }
   if ( pos == "Gardiens"){
     changeActif<-dbReadTable(con, paste0("statsGardiens", name))
-    for( i in 1:length(changeActif[,1])){
-      if (changeActif[i,1] %in% s){
-        changeActif[i,3] <- statue
-      }      
+    if (verifValidNew(s, changeActif, statue)){
+      for( i in 1:length(changeActif[,1])){
+        if (changeActif[i,1] %in% s){
+          changeActif[i,3] <- statue
+        }      
+      }
     }
     dbWriteTable(con,paste0("statsGardiens",name),changeActif,overwrite = T)
   }
@@ -215,5 +221,67 @@ NbreNew <- function(s,name,pos){
 
   }
 
+}
+
+verifValidNew<- function(selectJoueurs, tabPosition, statue){
+  
+  if (statue == "Actif"){
+    nbActif<- sum(tabPosition$Statues == "Actif")
+    
+    if (tabPosition[1,4] == "Att"){
+      if (nbActif + length(selectJoueurs) > 12){
+        showNotification("Il y a trop de joueurs de se statue a cette position")
+        return(FALSE)
+      }else{
+        return(TRUE)
+      }
+    }  
+    if (tabPosition[1,4] == "Def"){
+      if (nbActif + length(selectJoueurs) > 6){
+        showNotification("Il y a trop de joueurs de se statue a cette position")
+        return(FALSE)
+      }else{
+        return(TRUE)
+      }
+    }
+    if (tabPosition[1,4] == "G"){
+      if (nbActif + length(selectJoueurs) > 2){
+        showNotification("Il y a trop de joueurs de se statue a cette position")
+        return(FALSE)
+      }else{
+        return(TRUE)
+      }
+    }
+    
+  }else if(statue == "Backup"){
+    
+    nbNonActif<- sum(tabPosition$Statues != "Actif" && tabPosition$Statues != "New")
+    
+    if (tabPosition[1,4] == "Att"){
+      if (nbNonActif + length(selectJoueurs) > 3){
+        showNotification("Il y a trop de joueurs de se statue a cette position")
+        return(FALSE)
+      }else{
+        return(TRUE)
+      }
+    }  
+    if (tabPosition[1,4] == "Def"){
+      if (nbNonActif + length(selectJoueurs) > 2){
+        showNotification("Il y a trop de joueurs de se statue a cette position")
+        return(FALSE)
+      }else{
+        return(TRUE)
+      }
+    }
+    if (tabPosition[1,4] == "G"){
+      if (nbNonActif + length(selectJoueurs) > 1){
+        showNotification("Il y a trop de joueurs de se statue a cette position")
+        showNotification( paste(paste("Nb nom Actif :", nbNonActif), paste("nb select P :", nbNonActif)))
+        return(FALSE)
+      }else{
+        return(TRUE)
+      }
+    }
+  }
 }
   

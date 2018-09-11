@@ -6,7 +6,7 @@ dbListTables(con)
 dbReadTable(con, "infoPoolers")
 
 #dbRemoveTable(con,"infoPoolers")
-dbExistsTable(con,"statsGardienRich")
+dbReadTable(con,"statsGardiensRich")
 
 dbReadTable(con, "statsJoueurs")
 dbReadTable(con, "statsAttRich")
@@ -53,3 +53,8 @@ colnames(a)<- "password"
 a
 as.data
 dbWriteTable(con, "UpdatePassword", as.data.frame(a))
+
+
+for (i in dbListTables(con)){
+  dbRemoveTable(con, i)
+}
