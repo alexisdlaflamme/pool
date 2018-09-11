@@ -22,8 +22,8 @@ miseAJourPtsPoolers<-function(poolerName){
       tabAttPooler[j,]$Buts <-  statsAttPoolers[i,]$Buts
       tabAttPooler[j,]$Passes <-  statsAttPoolers[i,]$Passes
       tabAttPooler[j,]$DateDerniereModif<- as.character(Sys.Date( ))
-      j<- j + 1 
     }
+    j<- j + 1
   }
   
   statsDefPoolers<- rbind(statsJoueursNHL[which((statsJoueursNHL$Joueurs %in% tabDefPooler$Joueurs)),])
@@ -37,8 +37,8 @@ miseAJourPtsPoolers<-function(poolerName){
       tabDefPooler[j,]$Buts <-  statsDefPoolers[i,]$Buts
       tabDefPooler[j,]$Passes <-  statsDefPoolers[i,]$Passes
       tabDefPooler[j,]$DateDerniereModif<- as.character(Sys.Date( ))
-      j<- j + 1 
     }
+    j<- j + 1 
   }
   
   statsGardiensPoolers<- rbind(statsGardienNHL[which((statsGardienNHL$Joueurs %in% tabGardiensPooler$Joueurs)),])
@@ -55,8 +55,8 @@ miseAJourPtsPoolers<-function(poolerName){
       tabGardiensPooler[j,]$Buts <-  statsGardiensPoolers[i,]$Buts
       tabGardiensPooler[j,]$Passes <-  statsGardiensPoolers[i,]$Passes
       tabGardiensPooler[j,]$DateDerniereModif<- as.character(Sys.Date( ))
-      j<- j + 1 
     }
+    j<- j + 1 
   }
   
   dbWriteTable(con, paste0("statsAtt", poolerName), tabAttPooler, overwrite = T)
