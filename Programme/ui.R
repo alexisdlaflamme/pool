@@ -35,7 +35,7 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                                            choices = dbReadTable(con,"infoPoolers")$Nom),
                          HTML( paste(h4("Attaquant"))),
                          dataTableOutput("statsJoueursPooler"),
-                         HTML( paste('<br/>', h4("Defenseurs"))),
+                         HTML( paste('<br/>', h4("Défenseurs"))),
                          dataTableOutput("statsDefenseursPooler"),
                          HTML( paste('<br/>', h4("Gardiens"))),
                          dataTableOutput("statsGardiensPooler")
@@ -108,12 +108,12 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                         ),
                         fluidRow(
                           column(12, align="center", 
-                                 actionBttn("runEchange", label = "Proposer un echange", color ="success", style =  "bordered", size = "sm")
+                                 actionBttn("runEchange", label = "Proposer un échange", color ="success", style =  "bordered", size = "sm")
                           )
                         ),
                         fluidRow(
                           column(5,
-                                 HTML( paste('<br/>', h4("Sommaire des echanges"))),
+                                 HTML( paste('<br/>', h4("Sommaire des échanges"))),
                                  HTML('<br/>')
                           )
                         ),
@@ -164,7 +164,7 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                                               choices = colors(), selected = 0),
                                   passwordInput(inputId = "motPasseCreate", label = "Entrez votre mot de passe", width = "100%"),
                                   passwordInput(inputId = "motPasseConfirm", label = "Confirmer votre mot de passe", width = "100%"),
-                                  actionBttn("createNewPooler", "Creer")
+                                  actionBttn("createNewPooler", "Créer")
                            ),
                            column(8, offset = 1,
                                   fluidRow(
@@ -174,7 +174,7 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                            ),
                            column(8, offset = 3,
                                   fluidRow(
-                                    column(5, offset = 5, HTML( paste(h4("Defenseurs")))),
+                                    column(5, offset = 5, HTML( paste(h4("Défenseurs")))),
                                     alignementSelectionDefenseur()
                                   )
                                   
