@@ -119,7 +119,7 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                         ),
                         fluidRow(
                           column(12,align="center",
-                                 tableOutput("sommaireEchanges")
+                                 dataTableOutput("sommaireEchanges")
                           ),
                           column(5,
                                  HTML( paste('<br/>', h4(" "))),
@@ -130,8 +130,7 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                                  uiOutput("choixEchange")
                           ),
                           column(3,
-                                selectInput(inputId = "nomTrade", label = "Nom Poolers", width = "100%",
-                                        choices = dbReadTable(con,"infoPoolers")$Nom, selected = 1)
+                                uiOutput("listNomTrade")
                           ),
                           column(3,
                                  selectInput(inputId = "choixAction", label = "Choisir votre action", width = "100%",

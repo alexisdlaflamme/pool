@@ -12,7 +12,7 @@ dbReadTable(con, "statsJoueurs")
 dbReadTable(con, "statsAttRich")
 dbReadTable(con, "statsDefRich")
 dbReadTable(con, "statsAttXav")
-dbReadTable(con, "statsGardiensXav")
+dbReadTable(con, "statsGardiensRich")
 
 dbReadTable(con, "infoEchange")
 

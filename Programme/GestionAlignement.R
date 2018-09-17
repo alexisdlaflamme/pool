@@ -82,6 +82,7 @@ gestion <- function(s,name,Pos){
     }
   }
 }
+
 dataJoueur <- function(s,name,pos){
   if (pos == "Attaquants"){
     changeActif<-dbReadTable(con, paste0("statsAtt", name))
@@ -92,6 +93,7 @@ dataJoueur <- function(s,name,pos){
         }
         else {
           changeActif[i,3] <- 'Actif'
+          changeActif[i,]<- InitAttDefPtsAtToday(changeActif[i,])
         }
   
       }
@@ -107,6 +109,7 @@ dataJoueur <- function(s,name,pos){
         }
         else {
           changeActif[i,3] <- 'Actif'
+          changeActif[i,]<- InitAttDefPtsAtToday(changeActif[i,])
         }
         
       }
@@ -122,6 +125,7 @@ dataJoueur <- function(s,name,pos){
         }
         else {
           changeActif[i,3] <- 'Actif'
+          changeActif[i,]<- InitGardiensPtsAtToday(changeActif[i,])
         }
         
       }
@@ -136,6 +140,7 @@ Joueurnew <- function(s,name,pos,statue){
       for( i in 1:length(changeActif[,1])){
         if (changeActif[i,1] %in% s){
           changeActif[i,3] <- statue
+          changeActif[i,]<- InitAttDefPtsAtToday(changeActif[i,])
         }      
       }
       dbWriteTable(con,paste0("statsAtt",name),changeActif,overwrite = T)
@@ -147,6 +152,7 @@ Joueurnew <- function(s,name,pos,statue){
       for( i in 1:length(changeActif[,1])){
         if (changeActif[i,1] %in% s){
           changeActif[i,3] <- statue
+          changeActif[i,]<- InitAttDefPtsAtToday(changeActif[i,])
         }      
       }
     }
@@ -158,12 +164,14 @@ Joueurnew <- function(s,name,pos,statue){
       for( i in 1:length(changeActif[,1])){
         if (changeActif[i,1] %in% s){
           changeActif[i,3] <- statue
+          changeActif[i,]<- InitGardiensPtsAtToday(changeActif[i,])
         }      
       }
     }
     dbWriteTable(con,paste0("statsGardiens",name),changeActif,overwrite = T)
   }
 }
+
 NbreNew <- function(s,name,pos){
   if ( pos == "Attaquants"){
     n <- 0

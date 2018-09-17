@@ -1,6 +1,3 @@
-DirPGM<-paste(getwd(), "/Programme/", sep = "")
-
-
 library(dplyr)
 library(readxl)
 library(jsonlite)

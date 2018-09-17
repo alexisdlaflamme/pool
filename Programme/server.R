@@ -160,8 +160,9 @@ server <- function(input, output, session) {
         }
         else{
           player <- dataJoueur(s,name,pos)
-          dbWriteTable(con,paste0('statsAtt',input$PoolerName),player,overwrite = T)
+          dbWriteTable(con,paste0('statsGardiens',input$PoolerName),player,overwrite = T)
         }
+        
         output$statsJoueursAlignement<- DT::renderDataTable({
           if (input$Position == "Attaquants"){
             joueur <- miseEnFormeStatsAttPoolers(input$PoolerName)
@@ -234,10 +235,15 @@ server <- function(input, output, session) {
           }
           
           ###Faire en sorte de ne prendre seulement les joueurs qui n'ont pas été trade #######
-          listeJoueur<-rbind(matrix(dbReadTable(con, paste0("statsAtt", nom))$Joueur, length(dbReadTable(con, paste0("statsAtt", nom))$Joueur),1), 
-                            matrix(dbReadTable(con, paste0("statsDef", nom))$Joueur,length(dbReadTable(con, paste0("statsDef", nom))$Joueur),1), 
-                            matrix(dbReadTable(con, paste0("statsGardiens", nom))$Joueur,length(dbReadTable(con, paste0("statsGardiens", nom))$Joueur),1)) 
-    
+          att<- dbReadTable(con, paste0("statsAtt", nom))
+          attValidToTrade<- matrix(att[att$Statues %in% c("Actif", "Inactif", "Backup"),]$Joueur, ncol=1)
+          def<-dbReadTable(con, paste0("statsDef", nom))
+          defValidToTrade<- matrix(def[def$Statues %in% c("Actif", "Inactif", "Backup"),]$Joueur, ncol=1)
+          gardiens<- dbReadTable(con, paste0("statsGardiens", nom))
+          gardiensValidToTrade<- matrix(gardiens[gardiens$Statues %in% c("Actif", "Inactif", "Backup"),]$Joueur, ncol=1) 
+            
+          listeJoueur<-rbind(attValidToTrade, defValidToTrade, gardiensValidToTrade)
+          
           selectInput(inputId = i, label = "Liste Joueur", width = "100%", size = 10,
                       multiple = T ,choices = listeJoueur, selected = 0, selectize=F)
         }
@@ -272,7 +278,12 @@ server <- function(input, output, session) {
 
         addNewPropositionEchange(input$nomPoolers1, input$listJoueur1, input$nomPoolers2, input$listJoueur2)
         
-        output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
+        output$sommaireEchanges<- DT::renderDataTable({
+          echangeDt<- dbReadTable(con, "infoEchange")
+          datatable(echangeDt ,options = list("pageLength" = length(echangeDt[,1]), dom = 't'),rownames = FALSE,
+                    selection =list(mode = 'single',target = 'row'))
+        })
+          
         output$choixEchange<-  renderUI({
           selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
                       multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 1)
@@ -281,32 +292,59 @@ server <- function(input, output, session) {
     }
   })
   
-  output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
+  output$sommaireEchanges<- DT::renderDataTable({
+      echangeDt<- dbReadTable(con, "infoEchange")
+      datatable(echangeDt ,options = list("pageLength" = length(echangeDt[,1]), dom = 't'),rownames = FALSE,
+                selection =list(mode="single",target = 'row'))
+    })
   
   output$choixEchange<-  renderUI({
-            selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
-                                          multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 1)
+            EchangeSelected<- input$sommaireEchanges_rows_selected
+            
+            if (!is.null(EchangeSelected)){
+              selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
+                          multiple = F ,choices = EchangeSelected, selected = EchangeSelected)
+            }else{
+              selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
+                          multiple = F ,choices = NA, selected = 1)
+            }
+            
+  })
+  
+  output$listNomTrade<- renderUI({
+            choix<- c(dbReadTable(con,"infoEchange")[input$noEchange,2], dbReadTable(con,"infoEchange")[input$noEchange,6])
+            selectInput(inputId = "nomTrade", label = "Nom Poolers", width = "100%",
+                        choices = choix, selected = 1)
   })
   
   observeEvent(input$tradeAction, {
-    if (!dbExistsTable(con, paste0("ConfirmeEchange", input$noEchange))){
-      showNotification("Une decision a deja ete prise vis-a-vis cet echange")
-    }else{
-      
-      if (input$choixAction == "Accepter"){
+    if (!is.null(input$sommaireEchanges_rows_selected)){
+      if (!dbExistsTable(con, paste0("ConfirmeEchange", input$noEchange))){
+        showNotification("Une decision a deja ete prise vis-a-vis cet echange")
+      }else{
         
-        echangeAccepter(input$nomTrade,input$noEchange, input$motPasse)
-        output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
-        
-      }else if (input$choixAction == "Refuser"){
-        
-        echangeRefuser(input$nomTrade, input$noEchange, input$motPasse)
-        output$sommaireEchanges<- renderTable(dbReadTable(con, "infoEchange"))
-      
-        
+        if (input$choixAction == "Accepter"){
+          
+          echangeAccepter(input$nomTrade,input$noEchange, input$motPasse)
+          output$sommaireEchanges<- DT::renderDataTable({
+            echangeDt<- dbReadTable(con, "infoEchange")
+            datatable(echangeDt ,options = list("pageLength" = length(echangeDt[,1]), dom = 't'),rownames = FALSE,
+                      selection =list(mode = 'single',target = 'row'))
+          })
+          
+        }else if (input$choixAction == "Refuser"){
+          
+          echangeRefuser(input$nomTrade, input$noEchange, input$motPasse)
+          output$sommaireEchanges<- DT::renderDataTable({
+            echangeDt<- dbReadTable(con, "infoEchange")
+            datatable(echangeDt ,options = list("pageLength" = length(echangeDt[,1]), dom = 't'),rownames = FALSE,
+                      selection =list(mode = 'single',target = 'row'))
+          })
+        }
       }
+    }else{
+      showNotification("veuillez selectionner un echange")
     }
-    
     
   })
   

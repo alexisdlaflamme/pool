@@ -11,8 +11,9 @@ UpdateStatsAttDefNHL<- function(){
   
   stats<-as.data.frame(tables[[which.max(n.rows)]])
   stats<- subset(stats, Player != "Player")[,c(2:11)]
-  colnames(stats) = c("Joueurs", "Age", "Position", "Equipe", "GP", "Buts", "Passes", "PTS", "PlusMois", "PIM")
+  colnames(stats) = c("Joueurs", "Age", "Equipe", "Position", "GP", "Buts", "Passes", "PTS", "PlusMois", "PIM")
   stats[,c(2,5:10)] <-sapply(sapply(stats[,c(2,5:10)], as.character), as.numeric)
+  stats[,c(1,3,4)]<- sapply(stats[,c(1,3,4)], as.character)
   
   dbWriteTable(con, "statsJoueurs", stats, overwrite = T)
   
@@ -29,6 +30,7 @@ UpdateStatsGardiens<- function(){
   stats<- subset(stats, Player != "Player")[,c(2:9, 15, 23:25)]
   colnames(stats)<- c("Joueurs", "Age", "Equipe", "GP", "GS", "Win", "RL", "OL", "BL", "Buts", "Passes", "PTS")
   stats[,c(2,4:12)] <-sapply(sapply(stats[,c(2,4:12)], as.character), as.numeric)
+  stats[,c(1,3)]<- sapply(stats[,c(1,3)], as.character)
   
   dbWriteTable(con, "statsGardiens", stats, overwrite = T)
 }

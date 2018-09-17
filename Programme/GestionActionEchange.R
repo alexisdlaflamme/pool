@@ -104,9 +104,8 @@ trade<- function(numEchange){
           
           if (pos %in% c("statsAtt", "statsDef")){
             
-            newLineTabPosReceveur[,c(3,11:12)]<- c("New", as.character(Sys.Date( )), as.character(Sys.Date( )))
-            newLineTabPosReceveur[,c(8:10)]<- c(newLineTabPosReceveur$GP, newLineTabPosReceveur$Buts, 
-                                                newLineTabPosReceveur$Passes)
+            newLineTabPosReceveur[,3]<- c("New")
+            newLineTabPosReceveur<- InitAttDefPtsAtToday(newLineTabPosReceveur)
             
             
             tabPositionReceveur<- rbind(tabPositionReceveur, newLineTabPosReceveur)
@@ -114,10 +113,8 @@ trade<- function(numEchange){
             
           }else if (pos %in% c("statsGardiens")){
             
-            newLineTabPosReceveur[,c(3, 17:18)]<- c("New", as.character(Sys.Date( )), as.character(Sys.Date( )))
-            newLineTabPosReceveur[,c(11:16)]<- c(newLineTabPosReceveur$GP, newLineTabPosReceveur$Win, 
-                                                 newLineTabPosReceveur$OL, newLineTabPosReceveur$BL, 
-                                                 newLineTabPosReceveur$Buts, newLineTabPosReceveur$Passes)
+            newLineTabPosReceveur[,3]<- c("New")
+            newLineTabPosReceveur<- InitGardiensPtsAtToday(newLineTabPosReceveur)
             
             tabPositionReceveur<- rbind(tabPositionReceveur, newLineTabPosReceveur)
             tabPositionReceveur[,5:16]<- as.numeric(as.character(unlist(tabPositionReceveur[,5:16])))
