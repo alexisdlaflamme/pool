@@ -76,15 +76,18 @@ server <- function(input, output, session) {
       if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
         if (i == "statsJoueursPooler"){
           statsPoolersChoisi <- miseEnFormeStatsAttPoolers(input$statsPoolers)
-          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'), rownames = F)
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't')
+                    , rownames = F, selection = "none")
         }
         else if (i == "statsDefenseursPooler"){
           statsPoolersChoisi <- miseEnFormeStatsDefPoolers(input$statsPoolers)
-          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'), rownames = F)
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't')
+                    , rownames = F, selection = "none")
         }
         else if (i == "statsGardiensPooler"){
           statsPoolersChoisi <- miseEnFormeStatsGardiensPoolers(input$statsPoolers)
-          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't'), rownames = F)
+          datatable(statsPoolersChoisi,options = list("pageLength" = length(statsPoolersChoisi[,1]), dom = 't')
+                    , rownames = F, selection = "none")
         }
       }
     })
@@ -285,8 +288,16 @@ server <- function(input, output, session) {
         })
           
         output$choixEchange<-  renderUI({
-          selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
-                      multiple = F ,choices = 1:length(dbReadTable(con, "infoEchange")$Num), selected = 1)
+          EchangeSelected<- input$sommaireEchanges_rows_selected
+          
+          if (!is.null(EchangeSelected)){
+            selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
+                        multiple = F ,choices = EchangeSelected, selected = EchangeSelected)
+          }else{
+            selectInput(inputId = "noEchange", label = "Choisir le # de l'echange ", width = "100%",
+                        multiple = F ,choices = NA, selected = 1)
+          }
+          
         })
       }
     }

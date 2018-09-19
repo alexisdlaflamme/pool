@@ -174,7 +174,7 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                            ),
                            column(8, offset = 3,
                                   fluidRow(
-                                    column(5, offset = 5, HTML( paste(h4("Défenseurs")))),
+                                    column(5, offset = 5, HTML( paste(h4("Defenseurs")))),
                                     alignementSelectionDefenseur()
                                   )
                                   

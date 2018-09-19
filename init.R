@@ -1,5 +1,5 @@
 
-my_packages = c("DT", "jsonlite", "dplyr", "readxl", "shinyWidgets", "processx", "RPostgreSQL", "httr", 
+my_packages = c("DT", "jsonlite", "dplyr", "readxl", "shinyWidgets", "processx", "RPostgreSQL", "RPostgres", "httr", 
                 "XML", "RCurl", "rlist","dbplyr", "devtools", "shinythemes")
 
 install_if_missing = function(p) {
