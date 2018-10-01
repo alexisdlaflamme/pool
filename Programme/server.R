@@ -394,7 +394,8 @@ server <- function(input, output, session) {
                                         ))
     colnames(infoJoueursGardiens)<-c("Joueurs", "Equipe", "Statue", "POS")
     
-    verifEntrees<- ifelse(grepl("^[A-Za-z]+$", gsub("-", "",gsub("[[:space:]]", "", infoJoueursGardiens$Joueurs)), perl = T), T, F)
+    nomJoueursGardiensVerif<- gsub('.', "", gsub("-", "",gsub("[[:space:]]", "", infoJoueursGardiens$Joueurs)), fixed = T)
+    verifEntrees<- ifelse(grepl("^[A-Za-z]+$", nomJoueursGardiensVerif, perl = T), T, F)
     
     if (F %in% verifEntrees){
       showNotification("Tout les joueurs doivent avoir un nom non-vide ou contenir des caractères valides...")
