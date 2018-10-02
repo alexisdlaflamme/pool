@@ -1,6 +1,6 @@
 InitAttDefPtsAtToday<- function(ligneJoueur){
     
-    if (!dbExistsTable(con, "statsJoueurs")){
+    if (dbExistsTable(con, "statsJoueurs")){
       statsJoueursNHL<- dbReadTable(con, "statsJoueurs")
       posJoueurInStatsJoueursNHL<- match(ligneJoueur$Joueurs, statsJoueursNHL$Joueurs)
       
@@ -23,7 +23,7 @@ InitAttDefPtsAtToday<- function(ligneJoueur){
 
 InitGardiensPtsAtToday<- function(ligneJoueur){
   
-  if (!dbExistsTable(con, "statsGardiens")){
+  if (dbExistsTable(con, "statsGardiens")){
     statsGardienNHL<- dbReadTable(con, "statsGardiens")
     posJoueurInStatsGardienNHL<- match(ligneJoueur$Joueurs, statsGardienNHL$Joueurs)
     
