@@ -4,7 +4,7 @@ library(rlist)
 
 UpdateStatsAttDefNHL<- function(){
 
-  theurl <- getURL("https://www.hockey-reference.com/leagues/NHL_2018_skaters.html",.opts = list(ssl.verifypeer = FALSE) )
+  theurl <- getURL("https://www.hockey-reference.com/leagues/NHL_2019_skaters.html",.opts = list(ssl.verifypeer = FALSE) )
   tables <- readHTMLTable(theurl)
   tables <- list.clean(tables, fun = is.null, recursive = FALSE)
   n.rows <- unlist(lapply(tables, function(t) dim(t)[1]))
@@ -21,7 +21,7 @@ UpdateStatsAttDefNHL<- function(){
 
 UpdateStatsGardiens<- function(){
   
-  theurl <- getURL("https://www.hockey-reference.com/leagues/NHL_2018_goalies.html",.opts = list(ssl.verifypeer = FALSE) )
+  theurl <- getURL("https://www.hockey-reference.com/leagues/NHL_2019_goalies.html",.opts = list(ssl.verifypeer = FALSE) )
   tables <- readHTMLTable(theurl)
   tables <- list.clean(tables, fun = is.null, recursive = FALSE)
   n.rows <- unlist(lapply(tables, function(t) dim(t)[1]))

@@ -9,10 +9,10 @@ dbReadTable(con, "infoPoolers")
 dbReadTable(con,"statsGardiensRich")
 
 dbReadTable(con, "statsJoueurs")
-dbReadTable(con, "statsAttRich")
-dbReadTable(con, "statsDefRich")
+dbReadTable(con, "statsAttAlexis")
+dbReadTable(con, "statsDefAlexis")
 dbReadTable(con, "statsAttXav")
-dbReadTable(con, "statsGardiensRich")
+dbReadTable(con, "statsGardiensAlexis")
 
 dbReadTable(con, "infoEchange")
 
