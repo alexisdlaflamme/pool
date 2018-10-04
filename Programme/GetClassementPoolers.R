@@ -11,7 +11,7 @@ classementAttPoolers<- function(){
   classementAttaquant<-c()
   
   for (i in Nom){
-    classementAttaquant<- append(classementAttaquant,sum(miseEnFormeStatsAttPoolers(i)$PTS))
+    classementAttaquant<- append(classementAttaquant,sum(miseEnFormeStatsAttPoolers(i)$PTS, na.rm = T))
   }
   tabFinal<- as.data.frame(cbind(Nom, Couleur, classementAttaquant))
   tabFinal$classementAttaquant<- as.numeric(as.character(tabFinal$classementAttaquant))
@@ -26,7 +26,7 @@ classementDefPoolers<- function(){
   classementDefenseur<-c()
   
   for (i in Nom){
-    classementDefenseur<- append(classementDefenseur,sum(miseEnFormeStatsDefPoolers(i)$PTS))
+    classementDefenseur<- append(classementDefenseur,sum(miseEnFormeStatsDefPoolers(i)$PTS, na.rm = T))
   }
   tabFinal<- as.data.frame(cbind(Nom, Couleur, classementDefenseur))
   tabFinal$classementDefenseur<- as.numeric(as.character(tabFinal$classementDefenseur))
@@ -42,7 +42,7 @@ classementGardiensPoolers<- function(){
   classementGardiens<- c()
   
   for (i in Nom){
-    classementGardiens<- append(classementGardiens,sum(miseEnFormeStatsGardiensPoolers(i)$PTS))
+    classementGardiens<- append(classementGardiens,sum(miseEnFormeStatsGardiensPoolers(i)$PTS, na.rm = T))
   }
   tabFinal<- as.data.frame(cbind(Nom, Couleur, classementGardiens))
   tabFinal$classementGardiens<- as.numeric(as.character(tabFinal$classementGardiens))
@@ -57,9 +57,9 @@ classementPoolersTotal<-function(){
   classementTotal<- c()
   
   for (i in Nom){
-    classementTotal<- append(classementTotal,sum(sum(miseEnFormeStatsAttPoolers(i)$PTS)
-                                                      ,sum(miseEnFormeStatsDefPoolers(i)$PTS)
-                                                      ,sum(miseEnFormeStatsGardiensPoolers(i)$PTS)))
+    classementTotal<- append(classementTotal,sum(sum(miseEnFormeStatsAttPoolers(i)$PTS, na.rm = T)
+                                                      ,sum(miseEnFormeStatsDefPoolers(i)$PTS, na.rm = T)
+                                                      ,sum(miseEnFormeStatsGardiensPoolers(i)$PTS, na.rm = T)))
   }
   tabFinal<- as.data.frame(cbind(Nom, Couleur, classementTotal))
   tabFinal$classementTotal<- as.numeric(as.character(tabFinal$classementTotal))
