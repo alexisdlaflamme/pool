@@ -20,10 +20,13 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                            )
                          ),
                          fluidRow(
-                           column(8, offset = 2,
-                                  plotOutput("evoPtsJours",width = '100%')
-                            )
+                           lapply(1:length(dbReadTable(con,"evoPtsJours")[,1]), function(i) {
+                             column(4,
+                                    plotOutput(paste0("PtsJours",dbReadTable(con,"evoPtsJours")[i,1]))
+                             )
+                           })
                          )
+                         
                 ),
 ##########################################
 #     Section affichage stats Poolers    #

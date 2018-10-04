@@ -64,6 +64,22 @@ server <- function(input, output, session) {
       box()
     }
   })
+  lapply(1:length(dbReadTable(con,"evoPtsJours")[,1]), function(i) {
+    
+    output[[paste0("PtsJours",dbReadTable(con,"evoPtsJours")[i,1])]] <- renderPlot({
+      
+      pts <- as.numeric(dbReadTable(con,"evoPtsJours")[i,(2:length(dbReadTable(con,"evoPtsJours")))])
+      name <- colnames(dbReadTable(con,"evoPtsJours")[2:length(dbReadTable(con,"evoPtsJours"))])
+      bp<-barplot(pts, plot = F)
+      colnames(bp)<- "y"
+      barplot(pts,main = paste0("Points Quotidien ",dbReadTable(con,"evoPtsJours")[i,1]),
+              names.arg = name,las = 3, ylim = c(0,35))
+      par(xpd=T)
+      #text(cbind(bp,pts),labels=pts,pos=2)
+      box()
+      
+    })
+  })
   
 
   ###########################
