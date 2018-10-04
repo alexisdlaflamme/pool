@@ -28,7 +28,7 @@ updateEvoPtsTotal<- function(listNomPoolers){
   classementTotal<- classementPoolersTotal()
   evoPtsTotal<- dbReadTable(con, "evoPointsTotal")
   
-  evoPtsTotalNewCol<- matrix(rep(NA,3), ncol = 1)
+  evoPtsTotalNewCol<- matrix(rep(NA,length(classementTotal$Nom)), ncol = 1)
   colnames(evoPtsTotalNewCol)<- as.character(Sys.Date( ))
 
   for (nom in classementTotal$Nom){
