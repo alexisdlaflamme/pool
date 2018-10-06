@@ -6,18 +6,25 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
 
                 tabPanel("Acceuil",
                          fluidRow(
-                           column(5,
+                           column(4,
                                   plotOutput("graph_total",width = "100%")
                            ),
-                           column(5,offset = 1,
+                           column(4,
                                   plotOutput("graph_attaquant",width = "100%")                             
                            ),
-                           column(5,
+                           column(4,
                                   plotOutput("graph_defensseur",width = '100%')
                            ),
-                           column(5,offset = 1,
+                           column(4,
                                   plotOutput("graph_gardien",width = '100%')                   
+                           ),
+                           column(4,
+                                  plotOutput("graph_GP",width = '100%')                   
+                           ),
+                           column(4,
+                                  plotOutput("graph_PtsGP",width = '100%')                   
                            )
+                           
                          ),
                          fluidRow(
                            lapply(1:length(dbReadTable(con,"evoPtsJours")[,1]), function(i) {

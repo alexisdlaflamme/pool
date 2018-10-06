@@ -67,4 +67,43 @@ classementPoolersTotal<-function(){
   return(tabFinal[order(tabFinal$classementTotal),])
 }
 
+classementGamePlayPoolers<- function(){
+  table<- dbReadTable(con,"infoPoolers")
+  Nom<- table$Nom
+  Couleur<- table$Couleur
+  classementGP<-c()
+  
+  for (i in Nom){
+    classementGP<- append(classementGP,sum(sum(miseEnFormeStatsAttPoolers(i)$GP, na.rm = T)
+                                           ,sum(miseEnFormeStatsDefPoolers(i)$GP, na.rm = T)
+                                           ,sum(miseEnFormeStatsGardiensPoolers(i)$GP, na.rm = T)))
+  }
+  tabFinal<- as.data.frame(cbind(Nom, Couleur, classementGP))
+  tabFinal$classementGP<- as.numeric(as.character(tabFinal$classementGP))
+  
+  return(tabFinal[order(tabFinal$classementGP),])
+}
 
+classementPoolersPtsGP<-function(){
+  table<- dbReadTable(con,"infoPoolers")
+  Nom<- table$Nom
+  Couleur<- table$Couleur
+  classementTotal<- c()
+  classementGP<-c()
+  
+  for (i in Nom){
+    classementTotal<- append(classementTotal,sum(sum(miseEnFormeStatsAttPoolers(i)$PTS, na.rm = T)
+                                                 ,sum(miseEnFormeStatsDefPoolers(i)$PTS, na.rm = T)
+                                                 ,sum(miseEnFormeStatsGardiensPoolers(i)$PTS, na.rm = T)))
+    
+    classementGP<- append(classementGP,sum(sum(miseEnFormeStatsAttPoolers(i)$GP, na.rm = T)
+                                           ,sum(miseEnFormeStatsDefPoolers(i)$GP, na.rm = T)
+                                           ,sum(miseEnFormeStatsGardiensPoolers(i)$GP, na.rm = T)))
+  }
+  classementPtsGP<- round(as.numeric(as.character(classementTotal)) / as.numeric(as.character(classementGP)), 3)
+  
+  tabFinal<- as.data.frame(cbind(Nom, Couleur, classementPtsGP))
+  tabFinal$classementPtsGP<- as.numeric(as.character(tabFinal$classementPtsGP))
+  
+  return(tabFinal[order(tabFinal$classementPtsGP),])
+}

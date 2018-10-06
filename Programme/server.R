@@ -64,6 +64,37 @@ server <- function(input, output, session) {
       box()
     }
   })
+  
+  output$graph_GP <- renderPlot({ 
+    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      classement<- classementGamePlayPoolers()
+      bp<-barplot(classement[,3], plot = F)
+      colnames(bp)<- "y"
+      barplot(classement[,3],xlab = 'Points',
+              main = 'Classement Match Jouer',
+              col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
+              names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+      par(xpd=T)
+      text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
+      box()
+    }
+  })
+  
+  output$graph_PtsGP <- renderPlot({ 
+    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
+      classement<- classementPoolersPtsGP()
+      bp<-barplot(classement[,3], plot = F)
+      colnames(bp)<- "y"
+      barplot(classement[,3],xlab = 'Points',
+              main = 'Classement Match Jouer',
+              col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
+              names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+      par(xpd=T)
+      text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
+      box()
+    }
+  })
+  
   lapply(1:length(dbReadTable(con,"evoPtsJours")[,1]), function(i) {
     
     output[[paste0("PtsJours",dbReadTable(con,"evoPtsJours")[i,1])]] <- renderPlot({
