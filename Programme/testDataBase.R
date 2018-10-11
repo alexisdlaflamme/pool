@@ -10,8 +10,14 @@ dbReadTable(con,"statsGardiensRich")
 
 dbReadTable(con, "statsJoueurs")
 dbReadTable(con, "statsAttAlexis")
-dbReadTable(con, "statsDefAlexis")
-dbReadTable(con, "statsAttXav")
+
+
+#modif<- dbReadTable(con, "statsAttXavier")
+#modif[9,3]<- "Actif"
+#modif[9,c(5:10)]<- c(3,3,3,3,3,3)
+#dbWriteTable(con, "statsAttXavier" ,modif, overwrite = T )
+
+dbReadTable(con, "statsAttXavier")
 dbReadTable(con, "statsGardiensAlexis")
 
 dbReadTable(con, "infoEchange")
@@ -29,10 +35,10 @@ infoEchanges
 
 ##Ajout password temp
 
-test<- dbReadTable(con,"infoPoolers")[,-7]
-a<-matrix(c("allo1", "allo2", "allo3", 'allo4', "allo5"),5, 1)
-colnames(a)<- c("password")
-dbWriteTable(con, "infoPoolers", cbind(test,a), overwrite = T)
+#test<- dbReadTable(con,"infoPoolers")[,-7]
+#a<-matrix(c("allo1", "allo2", "allo3", 'allo4', "allo5"),5, 1)
+#colnames(a)<- c("password")
+#dbWriteTable(con, "infoPoolers", cbind(test,a), overwrite = T)
 
 
 
@@ -43,7 +49,6 @@ rownames(a)<- c("Yolo1", "Yolo2")
 
 a<-as.data.frame(a)
 
-dbWriteTable(con, "test", a)
 dbReadTable(con,"test")
 dbReadTable(con, "evoPointsTotal")
 
@@ -52,9 +57,4 @@ a<- matrix(c("!updatePool2."))
 colnames(a)<- "password"
 a
 as.data
-dbWriteTable(con, "UpdatePassword", as.data.frame(a))
-
-
-for (i in dbListTables(con)){
-  dbRemoveTable(con, i)
-}
+#dbWriteTable(con, "UpdatePassword", as.data.frame(a))
