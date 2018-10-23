@@ -205,7 +205,7 @@ server <- function(input, output, session) {
         }
         else if ((gestion(s,name,pos) == T) && (input$Position == "Defenseurs")){
           player <- dataJoueur(s,name,pos)
-          dbWriteTable(con,paste0('statsAtt',input$PoolerName),player,overwrite = T)
+          dbWriteTable(con,paste0('statsDef',input$PoolerName),player,overwrite = T)
           
         }
         else{

@@ -9,15 +9,13 @@ dbReadTable(con, "infoPoolers")
 dbReadTable(con,"statsGardiensRich")
 
 dbReadTable(con, "statsJoueurs")
-dbReadTable(con, "statsAttAlexis")
-
 
 #modif<- dbReadTable(con, "statsAttXavier")
 #modif[9,3]<- "Actif"
 #modif[9,c(5:10)]<- c(3,3,3,3,3,3)
 #dbWriteTable(con, "statsAttXavier" ,modif, overwrite = T )
 
-dbReadTable(con, "statsAttXavier")
+dbReadTable(con, "statsDefXavier")
 dbReadTable(con, "statsGardiensAlexis")
 
 dbReadTable(con, "infoEchange")
@@ -26,9 +24,11 @@ dbReadTable(con,"ConfirmeEchange1")
 
 ##Initialisation table infoEchange
 
-infoEchanges<- data.frame(matrix(rep(NA,8),1,8))
-colnames(infoEchanges)<- c("Num", "Poolers1", "Joueurs_offert_1", "Echange", "Joueurs_offert_2", "Poolers2", "Date", "Statue") 
-infoEchanges
+statsAttAlexis<- dbReadTable(con,"statsAttDav")
+Joueurs<- c("John Tavares", "Aleksander Barkov", "Artemi Panarin", "Patrick Kane", "Nicklas Backstrom", "Leon Draisaitl", "Jonathan Huberdeau",
+            "Brock Boeser", "Clayton Keller", "Brayden Point", "Matthew Tkachuk", "William Nylander", "Nico Hischier", "Bryan Little", "Reilly Smith")
+statsAttAlexis[,3]<- c(rep("Actif",11), "Backup", "Actif", "Backup", "Backup")
+#dbWriteTable(con, "statsAttAlexis" ,statsAttAlexis, overwrite = T )
 #dbWriteTable(con, "infoEchange" ,infoEchanges, overwrite = T )
 
 !dbExistsTable(con, "Allo")
