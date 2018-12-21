@@ -18,16 +18,19 @@ dbReadTable(con, "statsJoueurs")
 dbReadTable(con, "statsDefXavier")
 dbReadTable(con, "statsGardiensAlexis")
 
-dbReadTable(con, "infoEchange")
+
 
 dbReadTable(con,"ConfirmeEchange1")
 
 ##Initialisation table infoEchange
 
-statsAttAlexis<- dbReadTable(con,"statsAttDav")
-Joueurs<- c("John Tavares", "Aleksander Barkov", "Artemi Panarin", "Patrick Kane", "Nicklas Backstrom", "Leon Draisaitl", "Jonathan Huberdeau",
-            "Brock Boeser", "Clayton Keller", "Brayden Point", "Matthew Tkachuk", "William Nylander", "Nico Hischier", "Bryan Little", "Reilly Smith")
-statsAttAlexis[,3]<- c(rep("Actif",11), "Backup", "Actif", "Backup", "Backup")
+statsAttAlexis<- dbReadTable(con,"statsAttAlexis")
+
+
+
+#Joueurs<- c("John Tavares", "Aleksander Barkov", "Artemi Panarin", "Patrick Kane", "Nicklas Backstrom", "Leon Draisaitl", "Jonathan Huberdeau",
+#            "Brock Boeser", "Clayton Keller", "Brayden Point", "Matthew Tkachuk", "William Nylander", "Nico Hischier", "Bryan Little", "Reilly Smith")
+#statsAttAlexis[,3]<- c(rep("Actif",11), "Backup", "Actif", "Backup", "Backup")
 #dbWriteTable(con, "statsAttAlexis" ,statsAttAlexis, overwrite = T )
 #dbWriteTable(con, "infoEchange" ,infoEchanges, overwrite = T )
 
