@@ -4,7 +4,7 @@ library(shinythemes)
 library(DT)
 
 
-source("init.R")
+#source("init.R")
 DirPGM<-paste0(getwd(), "/Programme/")
 
 #Connection db

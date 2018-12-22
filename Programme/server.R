@@ -5,36 +5,23 @@ server <- function(input, output, session) {
   # Creation graphique #
   ######################
   
-#  output$graph_total <- renderPlot({
-#    if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
-#      classement<- classementPoolersTotal()
-#      bp<-barplot(classement[,3], plot = F)
-#      colnames(bp)<- "y"
-#      barplot(classement[,3],xlab = 'Points',
-#              main = 'Classement General',
-#              col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
-#              names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
-#      par(xpd=T)
-#      text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
-#      box()
-#    }
-# })
-  
   output$graph_total <- renderPlotly({
     if (!is.na(dbReadTable(con, "infoPoolers")[1,1])){
       classement<- classementPoolersTotal()
       classement$Nom<- factor(classement$Nom, levels =classement$Nom) #Création d'un facteur pour avoir le bon ordre dans le graphique
 
-      plot_ly(classement, x = ~classementTotal, y = ~Nom , type="bar", orientation = 'h',
-              marker = list(color = ~Couleur)) %>%
-        layout(title = "Classement General",
-               xaxis = list(title ="Points"),
-               yaxis = list(title=" "))%>%
-        config(displayModeBar = F)
-      
-      
-#      par(xpd=T)
-     # box()
+      plot_ly(classement, x = ~classementTotal, y = ~Nom , type="bar", orientation = 'h',  # width = 550, height = 300,
+              text = ~classementTotal, textposition = 'outside',
+              marker = list(color = ~Couleur,
+                            line = list(color = 'black',
+                                        width = 1)))  %>%
+        
+                  layout(title = "Classement Général",
+                         xaxis = list(title ="Points"),
+                         yaxis = list(title=" "))  %>%
+                         
+                    config(displayModeBar = F)
+
     }
   })
   
