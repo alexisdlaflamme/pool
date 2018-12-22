@@ -1,6 +1,6 @@
 
 my_packages = c("DT", "jsonlite", "dplyr", "readxl", "shinyWidgets", "processx", "RPostgreSQL", "RPostgres", "httr", 
-                "XML", "RCurl", "rlist","dbplyr", "devtools", "shinythemes", "ggplot2","plotly")
+                "XML", "RCurl", "rlist","dbplyr", "devtools", "shinythemes", "ggplot2","plotly", "magrittr")
 
 install_if_missing = function(p) {
   if (p %in% rownames(installed.packages()) == FALSE) {

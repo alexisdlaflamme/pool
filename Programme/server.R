@@ -28,13 +28,13 @@ server <- function(input, output, session) {
       plot_ly(classement, x = ~classementTotal, y = ~Nom , type="bar", orientation = 'h',
               marker = list(color = ~Couleur)) %>%
         layout(title = "Classement General",
-               xaxis = list("Nom"),
-               yaxis = list("Points"))
+               xaxis = list(title ="Points"),
+               yaxis = list(title=" "))%>%
+        config(displayModeBar = F)
       
       
-      par(xpd=T)
-      #text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
-      box()
+#      par(xpd=T)
+     # box()
     }
   })
   
