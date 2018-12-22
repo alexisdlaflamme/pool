@@ -7,7 +7,7 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                 tabPanel("Acceuil",
                          fluidRow(
                            column(4,
-                                  plotOutput("graph_total",width = "100%")
+                                  plotlyOutput("graph_total",width = "100%")
                            ),
                            column(4,
                                   plotOutput("graph_attaquant",width = "100%")                             
