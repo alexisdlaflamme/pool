@@ -99,12 +99,12 @@ server <- function(input, output, session) {
     
     output[[paste0("PtsJours",dbReadTable(con,"evoPtsJours")[i,1])]] <- renderPlot({
       
-      pts <- as.numeric(dbReadTable(con,"evoPtsJours")[i,(2:length(dbReadTable(con,"evoPtsJours")))])
-      name <- colnames(dbReadTable(con,"evoPtsJours")[2:length(dbReadTable(con,"evoPtsJours"))])
-      bp<-barplot(pts, plot = F)
-      colnames(bp)<- "y"
-      barplot(pts,main = paste0("Points Quotidien ",dbReadTable(con,"evoPtsJours")[i,1]),
-              names.arg = name,las = 3, ylim = c(0,35))
+      infoPoolers<- dbReadTable(con,"evoPtsJours")[i,]
+      pts <- infoPoolers[(2:length(infoPoolers))]
+      name <- colnames(infoPoolers[2:length(infoPoolers)])
+      name <- as.Date(as.character(gsub('X', "", gsub(".","-",name, fixed = T))))
+      plot(name, pts,main = paste0("Points Quotidien ",infoPoolers[1]), xlab = "", ylab = "",
+           las = 3, ylim = c(0,35), type = "h", col = dbReadTable(con, "infoPoolers")[i,2], lwd = 5)
       par(xpd=T)
       #text(cbind(bp,pts),labels=pts,pos=2)
       box()
