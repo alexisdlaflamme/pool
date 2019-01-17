@@ -521,4 +521,10 @@ server <- function(input, output, session) {
     
   })
   
+  ###Partie pour que ça éviter de virer gris sur Heroku
+  output$keepAlive <- renderText({
+    req(input$count)
+    paste("keep alive ", input$count)
+  })
+  
 }
