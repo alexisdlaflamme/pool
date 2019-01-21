@@ -86,7 +86,7 @@ server <- function(input, output, session) {
       bp<-barplot(classement[,3], plot = F)
       colnames(bp)<- "y"
       barplot(classement[,3],xlab = 'Points',
-              main = 'Classement Match Jouer',
+              main = 'Pts/partie',
               col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
               names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
       par(xpd=T)
@@ -95,16 +95,44 @@ server <- function(input, output, session) {
     }
   })
   
+  output$PtsHier <- renderPlot({
+    classement<- classementPoolersPtsHier()
+    bp<-barplot(classement[,3], plot = F)
+    colnames(bp)<- "y"
+    barplot(classement[,3],xlab = 'Points',
+            main = 'Points hier',
+            col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
+            names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+    par(xpd=T)
+    text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
+    box()
+  })
+  
+  output$EvoPtsTot <-renderPlotly({
+    evoPtsTotal<- dbReadTable(con, "evoPointsTotal")
+    infoPoolers<- dbReadTable(con,"infoPoolers")
+    name <- colnames(evoPtsTotal[2:length(evoPtsTotal)])
+    name <- as.Date(as.character(gsub('X', "", gsub(".","-",name, fixed = T))))
+    name<- c(as.Date("2018-10-03"), name)
+    pts<- unname(cbind(rep(0,6), evoPtsTotal[,2:length(evoPtsTotal)]))
+    p<- plot_ly() %>% layout(title = "Évolution Pts totaux")
+    for (i in 1:6){
+      p<- add_trace(p, x = name, y = pts[i,], type = "scatter", mode = 'lines',color = I(infoPoolers$Couleur[i]), name = infoPoolers$Nom[i] ) 
+    }
+    p 
+  })
+  
   lapply(1:length(dbReadTable(con,"evoPtsJours")[,1]), function(i) {
     
     output[[paste0("PtsJours",dbReadTable(con,"evoPtsJours")[i,1])]] <- renderPlotly({
-      
       infoPoolers<- dbReadTable(con,"evoPtsJours")[i,]
       pts <- infoPoolers[(2:length(infoPoolers))]
       name <- colnames(infoPoolers[2:length(infoPoolers)])
       name <- as.Date(as.character(gsub('X', "", gsub(".","-",name, fixed = T))))
-      plot_ly(x = name, y = unname(pts), type = "bar", color = I(dbReadTable(con, "infoPoolers")[i,2]))
-      
+      plot_ly(x = name, y = unname(pts), type = "bar", color = I(dbReadTable(con, "infoPoolers")[i,2])) %>%
+                layout(
+                  title = paste0("Points Quotidien ",infoPoolers[1]),
+                  yaxis = list(range = c(0, 30)))
     })
   })
   
@@ -402,58 +430,58 @@ server <- function(input, output, session) {
     
   })
   
-  ####################
-  ##Création poolers##
-  ####################
-  
-  observeEvent(input$createNewPooler, {
-    
-    infoJoueursGardiens<- as.data.frame(rbind( c(input$att1, "NA", "New", "Att"),
-                                               c(input$att2, "NA", "New", "Att"),
-                                               c(input$att3, "NA", "New", "Att"),
-                                               c(input$att4, "NA", "New", "Att"),
-                                               c(input$att5, "NA", "New", "Att"),
-                                               c(input$att6, "NA", "New", "Att"),
-                                               c(input$att7, "NA", "New", "Att"),
-                                               c(input$att8, "NA", "New", "Att"),
-                                               c(input$att9, "NA", "New", "Att"),
-                                               c(input$att10, "NA", "New", "Att"),
-                                               c(input$att11, "NA", "New", "Att"),
-                                               c(input$att12, "NA", "New", "Att"),
-                                               c(input$att13, "NA", "New", "Att"),
-                                               c(input$att14, "NA", "New", "Att"),
-                                               c(input$att15, "NA", "New", "Att"),
-                                               c(input$def1, "NA", "New", "Def"),
-                                               c(input$def2, "NA", "New", "Def"),
-                                               c(input$def3, "NA", "New", "Def"),
-                                               c(input$def4, "NA", "New", "Def"),
-                                               c(input$def5, "NA", "New", "Def"),
-                                               c(input$def6, "NA", "New", "Def"),
-                                               c(input$def7, "NA", "New", "Def"),
-                                               c(input$def8, "NA", "New", "Def"),
-                                               c(input$goal1, "NA", "New", "G"),
-                                               c(input$goal2, "NA", "New", "G"),
-                                               c(input$goal3, "NA", "New", "G")
-                                        ))
-    colnames(infoJoueursGardiens)<-c("Joueurs", "Equipe", "Statue", "POS")
-    
-    nomJoueursGardiensVerif<- gsub("'", "", gsub('.', "", gsub("-", "",gsub("[[:space:]]", "", infoJoueursGardiens$Joueurs)), fixed = T))
-    verifEntrees<- ifelse(grepl("^[A-Za-z]+$", nomJoueursGardiensVerif, perl = T), T, F)
-    
-    print(nomJoueursGardiensVerif)
-    
-    if (F %in% verifEntrees){
-      showNotification("Tout les joueurs doivent avoir un nom non-vide ou contenir des caractères valides...")
-    }
-    else if(input$motPasseCreate == input$motPasseConfirm){
-      createPoolers(input$nomPooler, input$colorPooler,  infoJoueursGardiens, input$motPasseCreate)
-      
-      showNotification(paste("Le pooler", input$nomPooler, "a bien été créée!"))
-    }else{
-      showNotification("Les deux mots de passes ne correspondent pas ...")
-    }
-      
-  })
+  # ####################
+  # ##Création poolers##
+  # ####################
+  # 
+  # observeEvent(input$createNewPooler, {
+  #   
+  #   infoJoueursGardiens<- as.data.frame(rbind( c(input$att1, "NA", "New", "Att"),
+  #                                              c(input$att2, "NA", "New", "Att"),
+  #                                              c(input$att3, "NA", "New", "Att"),
+  #                                              c(input$att4, "NA", "New", "Att"),
+  #                                              c(input$att5, "NA", "New", "Att"),
+  #                                              c(input$att6, "NA", "New", "Att"),
+  #                                              c(input$att7, "NA", "New", "Att"),
+  #                                              c(input$att8, "NA", "New", "Att"),
+  #                                              c(input$att9, "NA", "New", "Att"),
+  #                                              c(input$att10, "NA", "New", "Att"),
+  #                                              c(input$att11, "NA", "New", "Att"),
+  #                                              c(input$att12, "NA", "New", "Att"),
+  #                                              c(input$att13, "NA", "New", "Att"),
+  #                                              c(input$att14, "NA", "New", "Att"),
+  #                                              c(input$att15, "NA", "New", "Att"),
+  #                                              c(input$def1, "NA", "New", "Def"),
+  #                                              c(input$def2, "NA", "New", "Def"),
+  #                                              c(input$def3, "NA", "New", "Def"),
+  #                                              c(input$def4, "NA", "New", "Def"),
+  #                                              c(input$def5, "NA", "New", "Def"),
+  #                                              c(input$def6, "NA", "New", "Def"),
+  #                                              c(input$def7, "NA", "New", "Def"),
+  #                                              c(input$def8, "NA", "New", "Def"),
+  #                                              c(input$goal1, "NA", "New", "G"),
+  #                                              c(input$goal2, "NA", "New", "G"),
+  #                                              c(input$goal3, "NA", "New", "G")
+  #                                       ))
+  #   colnames(infoJoueursGardiens)<-c("Joueurs", "Equipe", "Statue", "POS")
+  #   
+  #   nomJoueursGardiensVerif<- gsub("'", "", gsub('.', "", gsub("-", "",gsub("[[:space:]]", "", infoJoueursGardiens$Joueurs)), fixed = T))
+  #   verifEntrees<- ifelse(grepl("^[A-Za-z]+$", nomJoueursGardiensVerif, perl = T), T, F)
+  #   
+  #   print(nomJoueursGardiensVerif)
+  #   
+  #   if (F %in% verifEntrees){
+  #     showNotification("Tout les joueurs doivent avoir un nom non-vide ou contenir des caractères valides...")
+  #   }
+  #   else if(input$motPasseCreate == input$motPasseConfirm){
+  #     createPoolers(input$nomPooler, input$colorPooler,  infoJoueursGardiens, input$motPasseCreate)
+  #     
+  #     showNotification(paste("Le pooler", input$nomPooler, "a bien été créée!"))
+  #   }else{
+  #     showNotification("Les deux mots de passes ne correspondent pas ...")
+  #   }
+  #     
+  # })
   
   ###############################
   #     Section Update Pool     #

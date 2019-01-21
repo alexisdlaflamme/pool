@@ -23,6 +23,12 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                            ),
                            column(4,
                                   plotOutput("graph_PtsGP",width = '100%')                   
+                           ),
+                           column(4, offset = 1,
+                                  plotOutput("PtsHier")
+                           ),
+                           column(4, offset = 1,
+                                  plotlyOutput("EvoPtsTot")
                            )
                            
                          ),
@@ -162,41 +168,43 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                         )
                 )
                 ,
-#################################
-#     Section Ajout Poolers     #
-#################################
 
-                tabPanel("Ajout Pooler",
-                         fluidRow(
-                           column(2,
-                                  textInput(inputId = "nomPooler", label = "Nom du nouveau pooler", width = "100%"),
-                                  selectInput(inputId = "colorPooler", label = "Choisir la couleur du nouveau pooler", width = "100%",
-                                              choices = colors(), selected = 0),
-                                  passwordInput(inputId = "motPasseCreate", label = "Entrez votre mot de passe", width = "100%"),
-                                  passwordInput(inputId = "motPasseConfirm", label = "Confirmer votre mot de passe", width = "100%"),
-                                  actionBttn("createNewPooler", "Créer")
-                           ),
-                           column(8, offset = 1,
-                                  fluidRow(
-                                    column(5, offset = 5, HTML( paste(h4("Attaquants")))),
-                                    alignementSelectionAttaquant()
-                                  )
-                           ),
-                           column(8, offset = 3,
-                                  fluidRow(
-                                    column(5, offset = 5, HTML( paste(h4("Defenseurs")))),
-                                    alignementSelectionDefenseur()
-                                  )
-                                  
-                           ),
-                           column(8, offset = 3,
-                                  fluidRow(
-                                    column(5, offset = 5, HTML( paste(h4("Gardiens")))),
-                                    alignementSelectionGardien()
-                                  )
-                           )
-                         )
-                ),
+# #################################
+# #     Section Ajout Poolers     #
+# #################################
+# 
+#                 tabPanel("Ajout Pooler",
+#                          fluidRow(
+#                            column(2,
+#                                   textInput(inputId = "nomPooler", label = "Nom du nouveau pooler", width = "100%"),
+#                                   selectInput(inputId = "colorPooler", label = "Choisir la couleur du nouveau pooler", width = "100%",
+#                                               choices = colors(), selected = 0),
+#                                   passwordInput(inputId = "motPasseCreate", label = "Entrez votre mot de passe", width = "100%"),
+#                                   passwordInput(inputId = "motPasseConfirm", label = "Confirmer votre mot de passe", width = "100%"),
+#                                   actionBttn("createNewPooler", "Créer")
+#                            ),
+#                            column(8, offset = 1,
+#                                   fluidRow(
+#                                     column(5, offset = 5, HTML( paste(h4("Attaquants")))),
+#                                     alignementSelectionAttaquant()
+#                                   )
+#                            ),
+#                            column(8, offset = 3,
+#                                   fluidRow(
+#                                     column(5, offset = 5, HTML( paste(h4("Defenseurs")))),
+#                                     alignementSelectionDefenseur()
+#                                   )
+#                                   
+#                            ),
+#                            column(8, offset = 3,
+#                                   fluidRow(
+#                                     column(5, offset = 5, HTML( paste(h4("Gardiens")))),
+#                                     alignementSelectionGardien()
+#                                   )
+#                            )
+#                          )
+#                 ),
+
 ###############################
 #     Section Update Pool     #
 ###############################

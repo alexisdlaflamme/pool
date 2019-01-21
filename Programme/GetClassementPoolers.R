@@ -107,3 +107,13 @@ classementPoolersPtsGP<-function(){
   
   return(tabFinal[order(tabFinal$classementPtsGP),])
 }
+
+classementPoolersPtsHier<- function(){
+  table<- dbReadTable(con,"infoPoolers")
+  Nom<- table$Nom
+  Couleur<- table$Couleur
+  ptsHier<- cbind(Nom, Couleur ,rev(dbReadTable(con, "evoPtsJours"))[1])
+  colnames(ptsHier)[3]<- "pts"
+  
+  return(ptsHier[order(ptsHier$pts),])
+}
