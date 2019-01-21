@@ -2,6 +2,7 @@ library(shiny)
 library(shinyWidgets)
 library(shinythemes)
 library(DT)
+library(plotly)
 
 DirPGM<-paste0(getwd(), "/Programme/")
 
