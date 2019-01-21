@@ -97,17 +97,13 @@ server <- function(input, output, session) {
   
   lapply(1:length(dbReadTable(con,"evoPtsJours")[,1]), function(i) {
     
-    output[[paste0("PtsJours",dbReadTable(con,"evoPtsJours")[i,1])]] <- renderPlot({
+    output[[paste0("PtsJours",dbReadTable(con,"evoPtsJours")[i,1])]] <- renderPlotly({
       
       infoPoolers<- dbReadTable(con,"evoPtsJours")[i,]
       pts <- infoPoolers[(2:length(infoPoolers))]
       name <- colnames(infoPoolers[2:length(infoPoolers)])
       name <- as.Date(as.character(gsub('X', "", gsub(".","-",name, fixed = T))))
-      plot(name, pts,main = paste0("Points Quotidien ",infoPoolers[1]), xlab = "", ylab = "",
-           las = 3, ylim = c(0,35), type = "h", col = dbReadTable(con, "infoPoolers")[i,2], lwd = 5)
-      par(xpd=T)
-      #text(cbind(bp,pts),labels=pts,pos=2)
-      box()
+      plot_ly(x = name, y = unname(pts), type = "bar", color = I(dbReadTable(con, "infoPoolers")[i,2]))
       
     })
   })
