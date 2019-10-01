@@ -31,14 +31,14 @@ ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
                                   plotlyOutput("EvoPtsTot")
                            )
                            
-                         ),
-                         fluidRow(
+                         )
+                         #fluidRow(
                            # lapply(1:length(dbReadTable(con,"evoPtsJours")[,1]), function(i) {
                            #   column(4,
                            #          plotlyOutput(paste0("PtsJours",dbReadTable(con,"evoPtsJours")[i,1]))
                            #   )
                            # })
-                         )
+                         #)
                          
                 ),
 ##########################################

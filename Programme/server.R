@@ -94,20 +94,22 @@ server <- function(input, output, session) {
       box()
     }
   })
-  
+
   output$PtsHier <- renderPlot({
-    classement<- classementPoolersPtsHier()
-    bp<-barplot(classement[,3], plot = F)
-    colnames(bp)<- "y"
-    barplot(classement[,3],xlab = 'Points',
-            main = 'Points hier',
-            col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
-            names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
-    par(xpd=T)
-    text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
-    box()
+     if (dbExistsTable(con, "evoPointsTotal")){
+        classement<- classementPoolersPtsHier()
+        bp<-barplot(classement[,3], plot = F)
+        colnames(bp)<- "y"
+        barplot(classement[,3],xlab = 'Points',
+                main = 'Points hier',
+                col = as.character(classement[,2]), border = "black",horiz=TRUE,beside = TRUE,
+                names.arg=classement[,1], las = 1,xlim =c(0,max(classement[,3])*1.2))
+        par(xpd=T)
+        text(cbind(classement[,3],bp),labels=classement[,3],pos=4)
+        box()
+     }
   })
-  
+
   output$EvoPtsTot <-renderPlotly({
     if (dbExistsTable(con, "evoPointsTotal")){
       evoPtsTotal<- dbReadTable(con, "evoPointsTotal")
@@ -118,7 +120,7 @@ server <- function(input, output, session) {
       pts<- unname(cbind(rep(0,6), evoPtsTotal[,2:length(evoPtsTotal)]))
       p<- plot_ly() %>% layout(title = "Evolution Pts totaux")
       for (i in 1:6){
-        p<- add_trace(p, x = name, y = pts[i,], type = "scatter", mode = 'lines',color = I(infoPoolers$Couleur[i]), name = infoPoolers$Nom[i] ) 
+        p<- add_trace(p, x = name, y = pts[i,], type = "scatter", mode = 'lines',color = I(infoPoolers$Couleur[i]), name = infoPoolers$Nom[i] )
       }
       p
     }
