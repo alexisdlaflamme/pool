@@ -22,11 +22,11 @@ postgress.connect <- function() {
     ##Ajuster##
     
     pool <- dbConnect(RPostgres::Postgres()
-                   , host     = "ec2-50-16-231-2.compute-1.amazonaws.com"
+                   , host     = "ec2-54-235-96-48.compute-1.amazonaws.com"
                    , port     = 5432
-                   , user     = "rkvaizleemdacw"
-                   , password = "7efca54493c95afc32fd648ac7bbdf0f2c4f6ba935e2b3fd7745d6bf545d2972"
-                   , dbname   = "d2tn74iejrtdue"
+                   , user     = "hyjwmtibyxqhzs"
+                   , password = "b55061358ae8a6ccd79a7d59df2315f9d9276477c12b0609230c19dd23f98651"
+                   , dbname   = "d8t0tkn8mpo2a6"
                    
     )
     print("Heroku application detected connecting to Postgres local")
