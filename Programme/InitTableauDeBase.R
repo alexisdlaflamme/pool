@@ -25,3 +25,17 @@ if (!dbExistsTable(con,"UpdatePassword")){
   dbWriteTable(con, "UpdatePassword", as.data.frame(password), overwrite = T)
   
 }
+
+if (!dbExistsTable(con, "evoPointsTotal")){
+  listNomPoolers <- dbReadTable(con, "infoPoolers")$Nom
+  evoPointsTotal<- data.frame(matrix(listNomPoolers, ncol = 1))
+  colnames(evoPointsTotal)<- c("nomPoolers")
+  dbWriteTable(con, "evoPointsTotal", evoPointsTotal, overwrite = T)
+}
+
+if(!dbExistsTable(con, "evoPtsJours")){
+  listNomPoolers <- dbReadTable(con, "infoPoolers")$Nom
+  evoPtsJours<- evoPointsTotal<- data.frame(matrix(c(listNomPoolers,rep(0, length(listNomPoolers))), ncol = 2))
+  colnames(evoPtsJours)<- c("nomPoolers", as.character(Sys.Date( )))
+  dbWriteTable(con, "evoPtsJours", evoPtsJours, overwrite = T)
+}
