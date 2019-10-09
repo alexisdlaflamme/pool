@@ -1,4 +1,4 @@
-ui <-navbarPage("Pool 2018-2019", theme = shinytheme("cerulean"),
+ui <-navbarPage("Pool 2019-2020", theme = shinytheme("cerulean"),
 
 ###########################
 #     Section Acceuil     #
